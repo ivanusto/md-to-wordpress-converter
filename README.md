@@ -38,7 +38,7 @@ npm run deploy
 ## 🔗 相關連結與 Credits
 
 - **作者 GitHub**: [Ivan Lin (@ivanusto)](https://github.com/ivanusto)
-- **部落格**: [yBlog 歪部落](https://yblog.org/)
+- **部落格**: [優格網](https://yblog.org/)
 - **線上工具體驗**: [WP-Markdown Converter](https://ivanusto.github.io/md-to-wordpress-converter/)
 
 ---

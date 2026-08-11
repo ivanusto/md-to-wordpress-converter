@@ -65,10 +65,10 @@ export const Header: React.FC<HeaderProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary btn-sm link-btn"
-            title="造訪 歪部落 yBlog"
+            title="造訪 優格網"
           >
             <Globe className="icon-sm text-blue" />
-            <span>yBlog</span>
+            <span>優格網</span>
           </a>
           <a
             href="https://github.com/ivanusto"
