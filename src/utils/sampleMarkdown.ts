@@ -12,7 +12,7 @@ tags:
 excerpt: "本文介紹如何輕鬆將寫好的 Markdown 文件轉換為 WordPress 可直接貼上的 Gutenberg 區塊與美觀 HTML 格式。"
 date: "2026-08-11"
 coverImage: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&auto=format&fit=crop"
-author: "Ivan Chen"
+author: "Ivan Lin"
 ---
 
 # 為什麼選擇 Markdown 撰寫 WordPress 文章？

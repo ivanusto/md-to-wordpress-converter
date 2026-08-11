@@ -151,6 +151,56 @@ body {
   gap: 1rem;
 }
 
+.header-external-links {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.link-btn {
+  text-decoration: none;
+}
+
+.text-blue {
+  color: #3b82f6;
+}
+
+/* App Footer */
+.app-footer {
+  height: 32px;
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.footer-credits {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-credits a {
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footer-credits a:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+.footer-divider {
+  color: var(--text-dim);
+}
+
 .theme-selector-wrapper {
   display: flex;
   align-items: center;

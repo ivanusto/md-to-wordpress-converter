@@ -139,6 +139,18 @@ export function App() {
         options={options}
         onOptionsChange={setOptions}
       />
+
+      <footer className="app-footer">
+        <div className="footer-credits">
+          <span>WP-Markdown Converter</span>
+          <span className="footer-divider">•</span>
+          <span>作者: <a href="https://github.com/ivanusto" target="_blank" rel="noopener noreferrer">Ivan Lin (@ivanusto)</a></span>
+          <span className="footer-divider">•</span>
+          <span>部落格: <a href="https://yblog.org/" target="_blank" rel="noopener noreferrer">yBlog 歪部落</a></span>
+          <span className="footer-divider">•</span>
+          <span>專案 Repo: <a href="https://github.com/ivanusto/md-to-wordpress-converter" target="_blank" rel="noopener noreferrer">md-to-wordpress-converter</a></span>
+        </div>
+      </footer>
     </div>
   );
 }
