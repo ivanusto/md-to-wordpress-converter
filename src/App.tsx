@@ -141,14 +141,21 @@ export function App() {
       />
 
       <footer className="app-footer">
+        <div className="footer-links">
+          <a href="https://ivanusto.github.io/watermarks-remover/" target="_blank" rel="noopener noreferrer">🛡️ AI 浮水印清除器</a>
+          <span className="footer-divider">•</span>
+          <a href="https://ivanusto.github.io/image-aspect-ratio-calculator/" target="_blank" rel="noopener noreferrer">📐 比例計算與裁切器</a>
+          <span className="footer-divider">•</span>
+          <a href="https://github.com/ivanusto/md-to-wordpress-converter" target="_blank" rel="noopener noreferrer">🐙 GitHub 專案</a>
+          <span className="footer-divider">•</span>
+          <a href="https://yblog.org/" target="_blank" rel="noopener noreferrer">🌐 優格網</a>
+        </div>
         <div className="footer-credits">
-          <span>WP-Markdown Converter</span>
+          <span>WP-Markdown Converter &copy; 2026</span>
           <span className="footer-divider">•</span>
           <span>作者: <a href="https://github.com/ivanusto" target="_blank" rel="noopener noreferrer">Ivan Lin (@ivanusto)</a></span>
           <span className="footer-divider">•</span>
-          <span>部落格: <a href="https://yblog.org/" target="_blank" rel="noopener noreferrer">優格網</a></span>
-          <span className="footer-divider">•</span>
-          <span>專案 Repo: <a href="https://github.com/ivanusto/md-to-wordpress-converter" target="_blank" rel="noopener noreferrer">md-to-wordpress-converter</a></span>
+          <span>100% 瀏覽器端本地運算 · 隱私守護</span>
         </div>
       </footer>
     </div>
