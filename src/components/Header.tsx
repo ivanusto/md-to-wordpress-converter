@@ -8,6 +8,7 @@ import {
   Globe,
   FileCode2,
   Languages,
+  ShieldCheck,
 } from 'lucide-react';
 import type { ThemeStyle, AppLanguage } from '../types';
 import { t } from '../utils/i18n';
@@ -18,6 +19,7 @@ interface HeaderProps {
   onFileUpload: (file: File) => void;
   onDownload: () => void;
   onOpenSettings: () => void;
+  onCleanAiMarks: () => void;
   themeStyle: ThemeStyle;
   onThemeStyleChange: (theme: ThemeStyle) => void;
   hasContent: boolean;
@@ -31,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   onFileUpload,
   onDownload,
   onOpenSettings,
+  onCleanAiMarks,
   themeStyle,
   onThemeStyleChange,
   hasContent,
@@ -141,6 +144,16 @@ export const Header: React.FC<HeaderProps> = ({
 
           {hasContent && (
             <>
+              <button
+                onClick={onCleanAiMarks}
+                className="btn btn-secondary btn-sm"
+                title={t('header.cleanAiBtn', lang)}
+                style={{ color: '#10b981' }}
+              >
+                <ShieldCheck className="icon-sm" />
+                <span>{t('header.cleanAiBtn', lang)}</span>
+              </button>
+
               <button
                 onClick={onDownload}
                 className="btn btn-secondary btn-sm"

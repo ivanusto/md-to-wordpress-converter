@@ -13,6 +13,7 @@ export const I18N_STRINGS = {
     'header.download': '下載',
     'header.clear': '清空',
     'header.settings': '轉換設定',
+    'header.cleanAiBtn': '去 AI 浮水印',
     'header.lang': '🌐 EN',
     
     // Theme options
@@ -23,10 +24,10 @@ export const I18N_STRINGS = {
 
     // Editor
     'editor.title': 'Markdown 輸入區 (.md)',
-    'editor.hint': '可包含 Frontmatter 元數據',
-    'editor.placeholder': '在此貼上或輸入 Markdown 內容... (亦可直接將 .md 檔案拖曳至此處)',
+    'editor.hint': '支援 Frontmatter 元數據 & AI 浮水印自動淨化',
+    'editor.placeholder': '在此貼上或輸入 Markdown 內容... (亦可直接將 .md 檔案拖曳至此處，自動去除 AI 隱形字元與轉碼)',
     'editor.dropTitle': '放開滑鼠以載入 Markdown 檔案',
-    'editor.dropHint': '支援 .md, .markdown, .txt 格式',
+    'editor.dropHint': '支援 .md, .markdown, .txt 格式，自動去除 AI 隱形浮水印',
     'editor.lines': '行',
     'editor.words': '字',
     'editor.chars': '字元',
@@ -34,6 +35,7 @@ export const I18N_STRINGS = {
     'editor.headings': '個標題',
     'editor.codeBlocks': '個代碼塊',
     'editor.images': '張圖片',
+    'editor.aiCleanBadge': '🛡️ 已清除 {n} 個 AI 隱形字元',
 
     // Preview
     'preview.tabVisual': '視覺預覽 & 直接貼上',
@@ -49,6 +51,11 @@ export const I18N_STRINGS = {
 
     // Settings
     'settings.title': '轉換與排版進階設定',
+    'settings.aiSection': '🛡️ AI 隱形字元與數位浮水印清除 (ChatGPT / Claude / Gemini)',
+    'settings.autoCleanAi': '匯入與轉換時自動清除 AI 隱形浮水印與指紋',
+    'settings.autoCleanAiDesc': '自動移除零寬字元 (U+200B/C/D)、不可見標籤碼 (Tag Chars)、Bidi 偽裝及變體選擇器',
+    'settings.normalizeSpaces': '自動標準化特殊空白 (NBSP / 全形空白 / 窄空白)',
+    'settings.normalizeSpacesDesc': '將不可見或非常規空白轉化為標準半形空格，避免排版錯亂',
     'settings.linkAttr': '連結與標題屬性',
     'settings.openLinksNewTab': '外部連結於新分頁開啟 (target="_blank")',
     'settings.openLinksNewTabDesc': '自動為包含 http/https 的連結加入 target="_blank" 及 rel="noopener noreferrer"',
@@ -105,6 +112,8 @@ export const I18N_STRINGS = {
     'toast.copiedVisual': '🚀 已成功複製格式化內容！請直接在 WordPress 視覺化編輯器按 Ctrl + V 貼上！',
     'toast.copiedGutenberg': '🧱 已複製 Gutenberg 區塊語法！可貼入 WordPress 程式碼編輯器中！',
     'toast.copiedHtml': '🏷️ 已複製 HTML 原生碼！',
+    'toast.aiCleaned': '🛡️ 已自動淨化 {n} 個 AI 隱形字元與浮水印！',
+    'toast.aiCleanManual': '🛡️ 已完成 AI 浮水印掃描與淨化！共處理 {n} 處標記。',
   },
   'en': {
     'brand.title': 'WP-Markdown',
@@ -118,6 +127,7 @@ export const I18N_STRINGS = {
     'header.download': 'Download',
     'header.clear': 'Clear',
     'header.settings': 'Settings',
+    'header.cleanAiBtn': 'Clean AI Marks',
     'header.lang': '🌐 中文',
     
     // Theme options
@@ -128,10 +138,10 @@ export const I18N_STRINGS = {
 
     // Editor
     'editor.title': 'Markdown Input Area (.md)',
-    'editor.hint': 'Supports Frontmatter Metadata',
-    'editor.placeholder': 'Paste or type Markdown content here... (You can also drag and drop .md files directly)',
+    'editor.hint': 'Supports Frontmatter Metadata & AI Watermark Auto-Clean',
+    'editor.placeholder': 'Paste or type Markdown content here... (Drag and drop .md files directly; auto-cleans AI invisible watermarks & fingerprints)',
     'editor.dropTitle': 'Drop mouse to load Markdown file',
-    'editor.dropHint': 'Supports .md, .markdown, .txt files',
+    'editor.dropHint': 'Supports .md, .markdown, .txt files with automatic AI watermark removal',
     'editor.lines': 'lines',
     'editor.words': 'words',
     'editor.chars': 'chars',
@@ -139,6 +149,7 @@ export const I18N_STRINGS = {
     'editor.headings': 'headings',
     'editor.codeBlocks': 'code blocks',
     'editor.images': 'images',
+    'editor.aiCleanBadge': '🛡️ {n} AI marks removed',
 
     // Preview
     'preview.tabVisual': 'Visual Preview & Direct Paste',
@@ -154,6 +165,11 @@ export const I18N_STRINGS = {
 
     // Settings
     'settings.title': 'Advanced Conversion & Layout Settings',
+    'settings.aiSection': '🛡️ AI Invisible Watermark & Provenance Cleaner (ChatGPT / Claude / Gemini)',
+    'settings.autoCleanAi': 'Auto-strip AI invisible watermarks & fingerprints on import/conversion',
+    'settings.autoCleanAiDesc': 'Automatically strips zero-width spaces (U+200B/C/D), tag characters, bidi overrides, and variation selectors',
+    'settings.normalizeSpaces': 'Normalize space homoglyphs (NBSP / ideographic / thin spaces)',
+    'settings.normalizeSpacesDesc': 'Converts unconventional or invisible spaces to standard ASCII space',
     'settings.linkAttr': 'Links & Headings Attributes',
     'settings.openLinksNewTab': 'Open External Links in New Tab (target="_blank")',
     'settings.openLinksNewTabDesc': 'Automatically adds target="_blank" and rel="noopener noreferrer" to external http/https links',
@@ -210,6 +226,8 @@ export const I18N_STRINGS = {
     'toast.copiedVisual': '🚀 Formatted content copied! Press Ctrl + V directly inside WordPress Visual Editor!',
     'toast.copiedGutenberg': '🧱 Gutenberg block code copied! Paste into WordPress Code Editor!',
     'toast.copiedHtml': '🏷️ HTML source code copied!',
+    'toast.aiCleaned': '🛡️ Auto-cleaned {n} AI invisible marks & watermarks!',
+    'toast.aiCleanManual': '🛡️ AI watermark scan complete! Cleaned {n} marks.',
   }
 };
 

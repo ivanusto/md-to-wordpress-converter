@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, FileUp, Hash, Clock, Code, Image as ImageIcon, AlignLeft } from 'lucide-react';
+import { FileText, FileUp, Hash, Clock, Code, Image as ImageIcon, AlignLeft, ShieldCheck } from 'lucide-react';
 import type { MarkdownStats, AppLanguage } from '../types';
 import { t } from '../utils/i18n';
 
@@ -63,7 +63,14 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           <span>{t('editor.title', lang)}</span>
         </div>
         <div className="editor-quick-hint">
-          <span>{t('editor.hint', lang)}</span>
+          {stats.cleanedAiMarksCount > 0 ? (
+            <span style={{ color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
+              <ShieldCheck className="icon-xs" />
+              <span>{t('editor.aiCleanBadge', lang, { n: stats.cleanedAiMarksCount })}</span>
+            </span>
+          ) : (
+            <span>{t('editor.hint', lang)}</span>
+          )}
         </div>
       </div>
 
@@ -91,6 +98,12 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           <Clock className="icon-xs" />
           <span>{t('editor.readTime', lang, { n: stats.readTimeMinutes })}</span>
         </div>
+        {stats.cleanedAiMarksCount > 0 && (
+          <div className="stat-item" title="AI Invisible Watermark Removed" style={{ color: '#10b981', fontWeight: 600 }}>
+            <ShieldCheck className="icon-xs" />
+            <span>{t('editor.aiCleanBadge', lang, { n: stats.cleanedAiMarksCount })}</span>
+          </div>
+        )}
         <div className="stat-item hidden-mobile" title="Headings Count">
           <span className="stat-label">H</span>
           <span>{stats.headingCount} {t('editor.headings', lang)}</span>

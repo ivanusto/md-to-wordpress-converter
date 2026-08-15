@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Sliders, Check } from 'lucide-react';
+import { X, Sliders, Check, ShieldCheck } from 'lucide-react';
 import type { ConverterOptions, CodeTheme, AppLanguage } from '../types';
 import { t } from '../utils/i18n';
 
@@ -41,6 +41,37 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         <div className="modal-body">
+          {/* AI Invisible Watermark Stripper Group */}
+          <div className="setting-group" style={{ background: 'rgba(99, 102, 241, 0.05)', padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(99, 102, 241, 0.15)' }}>
+            <h4 className="setting-group-title" style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ShieldCheck className="icon-sm" />
+              <span>{t('settings.aiSection', lang)}</span>
+            </h4>
+            <label className="checkbox-setting">
+              <input
+                type="checkbox"
+                checked={options.autoCleanAiWatermarks}
+                onChange={(e) => handleChange('autoCleanAiWatermarks', e.target.checked)}
+              />
+              <div className="checkbox-label-text">
+                <strong>{t('settings.autoCleanAi', lang)}</strong>
+                <p>{t('settings.autoCleanAiDesc', lang)}</p>
+              </div>
+            </label>
+
+            <label className="checkbox-setting" style={{ marginTop: '8px' }}>
+              <input
+                type="checkbox"
+                checked={options.normalizeSpaceHomoglyphs}
+                onChange={(e) => handleChange('normalizeSpaceHomoglyphs', e.target.checked)}
+              />
+              <div className="checkbox-label-text">
+                <strong>{t('settings.normalizeSpaces', lang)}</strong>
+                <p>{t('settings.normalizeSpacesDesc', lang)}</p>
+              </div>
+            </label>
+          </div>
+
           <div className="setting-group">
             <h4 className="setting-group-title">{t('settings.linkAttr', lang)}</h4>
             <label className="checkbox-setting">

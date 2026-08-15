@@ -88,7 +88,7 @@ export function extractImages(markdown: string): ExtractedImage[] {
   return images;
 }
 
-export function calculateStats(markdown: string): MarkdownStats {
+export function calculateStats(markdown: string, cleanedAiMarksCount: number = 0): MarkdownStats {
   const charCount = markdown.length;
   const words = markdown
     .replace(/[#*`~_>\-\[\]()]/g, ' ')
@@ -111,6 +111,7 @@ export function calculateStats(markdown: string): MarkdownStats {
     imageCount,
     codeBlockCount,
     tableCount,
+    cleanedAiMarksCount,
   };
 }
 

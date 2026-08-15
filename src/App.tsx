@@ -11,6 +11,7 @@ import {
   parseMarkdownToHtml,
 } from './utils/markdownParser';
 import { convertToGutenbergBlocks } from './utils/gutenbergConverter';
+import { cleanAiWatermarks } from './utils/aiWatermarkCleaner';
 import type { ConverterOptions, ParsedMarkdownResult, ThemeStyle, AppLanguage } from './types';
 import { CheckCircle2 } from 'lucide-react';
 import { t } from './utils/i18n';
@@ -23,6 +24,8 @@ const DEFAULT_OPTIONS: ConverterOptions = {
   customImagePrefix: '',
   convertCalloutsToGutenberg: true,
   includeFrontmatterInOutput: false,
+  autoCleanAiWatermarks: true,
+  normalizeSpaceHomoglyphs: true,
 };
 
 function getInitialLanguage(): AppLanguage {
@@ -60,15 +63,26 @@ export function App() {
   };
 
   const parsedResult: ParsedMarkdownResult = useMemo(() => {
-    const { frontmatter, content } = parseFrontmatter(markdown);
+    let effectiveMarkdown = markdown;
+    let cleanedAiMarksCount = 0;
+
+    if (options.autoCleanAiWatermarks) {
+      const cleanRes = cleanAiWatermarks(markdown, {
+        normalizeSpaces: options.normalizeSpaceHomoglyphs,
+      });
+      effectiveMarkdown = cleanRes.cleanedText;
+      cleanedAiMarksCount = cleanRes.totalModifications;
+    }
+
+    const { frontmatter, content } = parseFrontmatter(effectiveMarkdown);
     const images = extractImages(content);
-    const stats = calculateStats(markdown);
+    const stats = calculateStats(effectiveMarkdown, cleanedAiMarksCount);
     const htmlContent = parseMarkdownToHtml(content, imageReplacements, options);
     const gutenbergContent = convertToGutenbergBlocks(htmlContent);
 
     return {
       frontmatter,
-      rawMarkdown: markdown,
+      rawMarkdown: effectiveMarkdown,
       contentMarkdown: content,
       htmlContent,
       gutenbergContent,
@@ -82,11 +96,33 @@ export function App() {
     reader.onload = (e) => {
       const text = e.target?.result as string;
       if (typeof text === 'string') {
-        setMarkdown(text);
-        showToast(t('toast.fileLoaded', lang, { name: file.name }));
+        if (options.autoCleanAiWatermarks) {
+          const cleanRes = cleanAiWatermarks(text, {
+            normalizeSpaces: options.normalizeSpaceHomoglyphs,
+          });
+          setMarkdown(cleanRes.cleanedText);
+          if (cleanRes.totalModifications > 0) {
+            showToast(
+              `${t('toast.fileLoaded', lang, { name: file.name })} · ${t('toast.aiCleaned', lang, { n: cleanRes.totalModifications })}`
+            );
+          } else {
+            showToast(t('toast.fileLoaded', lang, { name: file.name }));
+          }
+        } else {
+          setMarkdown(text);
+          showToast(t('toast.fileLoaded', lang, { name: file.name }));
+        }
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleManualCleanAi = () => {
+    const cleanRes = cleanAiWatermarks(markdown, {
+      normalizeSpaces: options.normalizeSpaceHomoglyphs,
+    });
+    setMarkdown(cleanRes.cleanedText);
+    showToast(t('toast.aiCleanManual', lang, { n: cleanRes.totalModifications }));
   };
 
   const handleDownload = () => {
@@ -130,6 +166,7 @@ export function App() {
         onFileUpload={handleFileUpload}
         onDownload={handleDownload}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onCleanAiMarks={handleManualCleanAi}
         themeStyle={options.themeStyle}
         onThemeStyleChange={(themeStyle: ThemeStyle) =>
           setOptions((prev) => ({ ...prev, themeStyle }))

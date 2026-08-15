@@ -26,6 +26,7 @@ export interface MarkdownStats {
   imageCount: number;
   codeBlockCount: number;
   tableCount: number;
+  cleanedAiMarksCount: number;
 }
 
 export interface ParsedMarkdownResult {
@@ -51,4 +52,6 @@ export interface ConverterOptions {
   customImagePrefix: string;
   convertCalloutsToGutenberg: boolean;
   includeFrontmatterInOutput: boolean;
+  autoCleanAiWatermarks: boolean;
+  normalizeSpaceHomoglyphs: boolean;
 }
