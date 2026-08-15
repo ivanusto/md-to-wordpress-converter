@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { FileText, FileUp, Hash, Clock, Code, Image as ImageIcon, AlignLeft } from 'lucide-react';
-import type { MarkdownStats } from '../types';
+import type { MarkdownStats, AppLanguage } from '../types';
+import { t } from '../utils/i18n';
 
 interface MarkdownEditorProps {
   value: string;
   onChange: (value: string) => void;
   onFileUpload: (file: File) => void;
   stats: MarkdownStats;
+  lang: AppLanguage;
 }
 
 export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
@@ -14,6 +16,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   onChange,
   onFileUpload,
   stats,
+  lang,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -49,18 +52,18 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
       {isDragging && (
         <div className="drag-overlay">
           <FileUp className="icon-xl text-primary animate-bounce" />
-          <h3>放開滑鼠以載入 Markdown 檔案</h3>
-          <p>支援 .md, .markdown, .txt 格式</p>
+          <h3>{t('editor.dropTitle', lang)}</h3>
+          <p>{t('editor.dropHint', lang)}</p>
         </div>
       )}
 
       <div className="editor-header">
         <div className="editor-title">
           <FileText className="icon-sm text-primary" />
-          <span>Markdown 輸入區 (.md)</span>
+          <span>{t('editor.title', lang)}</span>
         </div>
         <div className="editor-quick-hint">
-          <span>可包含 Frontmatter 元數據</span>
+          <span>{t('editor.hint', lang)}</span>
         </div>
       </div>
 
@@ -69,36 +72,36 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           ref={textareaRef}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="在此貼上或輸入 Markdown 內容... (亦可直接將 .md 檔案拖曳至此處)"
+          placeholder={t('editor.placeholder', lang)}
           className="editor-textarea"
           spellCheck={false}
         />
       </div>
 
       <div className="editor-footer">
-        <div className="stat-item" title="總行數">
+        <div className="stat-item" title="Lines">
           <AlignLeft className="icon-xs" />
-          <span>{lineCount} 行</span>
+          <span>{lineCount} {t('editor.lines', lang)}</span>
         </div>
-        <div className="stat-item" title="總字數">
+        <div className="stat-item" title="Words / Chars">
           <Hash className="icon-xs" />
-          <span>{stats.wordCount} 字 / {stats.charCount} 字元</span>
+          <span>{stats.wordCount} {t('editor.words', lang)} / {stats.charCount} {t('editor.chars', lang)}</span>
         </div>
-        <div className="stat-item" title="預估閱讀時間">
+        <div className="stat-item" title="Estimated Reading Time">
           <Clock className="icon-xs" />
-          <span>約 {stats.readTimeMinutes} 分鐘</span>
+          <span>{t('editor.readTime', lang, { n: stats.readTimeMinutes })}</span>
         </div>
-        <div className="stat-item hidden-mobile" title="標題數量">
+        <div className="stat-item hidden-mobile" title="Headings Count">
           <span className="stat-label">H</span>
-          <span>{stats.headingCount} 個標題</span>
+          <span>{stats.headingCount} {t('editor.headings', lang)}</span>
         </div>
-        <div className="stat-item hidden-mobile" title="程式碼區塊">
+        <div className="stat-item hidden-mobile" title="Code Blocks Count">
           <Code className="icon-xs" />
-          <span>{stats.codeBlockCount} 個代碼塊</span>
+          <span>{stats.codeBlockCount} {t('editor.codeBlocks', lang)}</span>
         </div>
-        <div className="stat-item hidden-mobile" title="圖片數量">
+        <div className="stat-item hidden-mobile" title="Images Count">
           <ImageIcon className="icon-xs" />
-          <span>{stats.imageCount} 張圖片</span>
+          <span>{stats.imageCount} {t('editor.images', lang)}</span>
         </div>
       </div>
     </div>

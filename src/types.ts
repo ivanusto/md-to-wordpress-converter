@@ -41,6 +41,7 @@ export interface ParsedMarkdownResult {
 export type ViewMode = 'visual' | 'gutenberg' | 'html' | 'metadata' | 'images';
 export type ThemeStyle = 'wordpress' | 'editorial' | 'dark' | 'corporate';
 export type CodeTheme = 'github' | 'monokai' | 'dracula' | 'vscode' | 'one-dark';
+export type AppLanguage = 'zh-TW' | 'en';
 
 export interface ConverterOptions {
   openLinksInNewTab: boolean;

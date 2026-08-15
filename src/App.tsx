@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Header } from './components/Header';
 import { MarkdownEditor } from './components/MarkdownEditor';
 import { PreviewPanel } from './components/PreviewPanel';
@@ -11,8 +11,9 @@ import {
   parseMarkdownToHtml,
 } from './utils/markdownParser';
 import { convertToGutenbergBlocks } from './utils/gutenbergConverter';
-import type { ConverterOptions, ParsedMarkdownResult, ThemeStyle } from './types';
+import type { ConverterOptions, ParsedMarkdownResult, ThemeStyle, AppLanguage } from './types';
 import { CheckCircle2 } from 'lucide-react';
+import { t } from './utils/i18n';
 
 const DEFAULT_OPTIONS: ConverterOptions = {
   openLinksInNewTab: true,
@@ -24,12 +25,32 @@ const DEFAULT_OPTIONS: ConverterOptions = {
   includeFrontmatterInOutput: false,
 };
 
+function getInitialLanguage(): AppLanguage {
+  const saved = localStorage.getItem('wp_md_lang');
+  if (saved === 'zh-TW' || saved === 'en') return saved;
+  const userLangs = navigator.languages || [navigator.language || ''];
+  for (const lang of userLangs) {
+    if (lang && lang.toLowerCase().startsWith('zh')) return 'zh-TW';
+  }
+  return 'en';
+}
+
 export function App() {
+  const [lang, setLang] = useState<AppLanguage>(getInitialLanguage);
   const [markdown, setMarkdown] = useState<string>(SAMPLE_MARKDOWN);
   const [options, setOptions] = useState<ConverterOptions>(DEFAULT_OPTIONS);
   const [imageReplacements, setImageReplacements] = useState<Record<string, string>>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    localStorage.setItem('wp_md_lang', lang);
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  const toggleLanguage = () => {
+    setLang((prev) => (prev === 'zh-TW' ? 'en' : 'zh-TW'));
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -62,7 +83,7 @@ export function App() {
       const text = e.target?.result as string;
       if (typeof text === 'string') {
         setMarkdown(text);
-        showToast(`已成功讀取檔案: ${file.name}`);
+        showToast(t('toast.fileLoaded', lang, { name: file.name }));
       }
     };
     reader.readAsText(file);
@@ -78,7 +99,7 @@ export function App() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    showToast('檔案下載成功！');
+    showToast(t('toast.downloadSuccess', lang));
   };
 
   const handleUpdateImageReplacement = (originalUrl: string, newUrl: string) => {
@@ -100,11 +121,11 @@ export function App() {
       <Header
         onLoadSample={() => {
           setMarkdown(SAMPLE_MARKDOWN);
-          showToast('已載入範例 Markdown 文章');
+          showToast(t('toast.sampleLoaded', lang));
         }}
         onClear={() => {
           setMarkdown('');
-          showToast('內容已清空');
+          showToast(t('toast.cleared', lang));
         }}
         onFileUpload={handleFileUpload}
         onDownload={handleDownload}
@@ -114,6 +135,8 @@ export function App() {
           setOptions((prev) => ({ ...prev, themeStyle }))
         }
         hasContent={Boolean(markdown.trim())}
+        lang={lang}
+        onToggleLang={toggleLanguage}
       />
 
       <main className="main-content-split">
@@ -122,6 +145,7 @@ export function App() {
           onChange={setMarkdown}
           onFileUpload={handleFileUpload}
           stats={parsedResult.stats}
+          lang={lang}
         />
 
         <PreviewPanel
@@ -130,6 +154,7 @@ export function App() {
           imageReplacements={imageReplacements}
           onUpdateImageReplacement={handleUpdateImageReplacement}
           onShowToast={showToast}
+          lang={lang}
         />
       </main>
 
@@ -138,24 +163,29 @@ export function App() {
         onClose={() => setIsSettingsOpen(false)}
         options={options}
         onOptionsChange={setOptions}
+        lang={lang}
       />
 
       <footer className="app-footer">
         <div className="footer-links">
-          <a href="https://ivanusto.github.io/watermarks-remover/" target="_blank" rel="noopener noreferrer">🛡️ AI 浮水印清除器</a>
+          <a href="https://ivanusto.github.io/watermarks-remover/" target="_blank" rel="noopener noreferrer">
+            {t('footer.linkWm', lang)}
+          </a>
           <span className="footer-divider">•</span>
-          <a href="https://ivanusto.github.io/image-aspect-ratio-calculator/" target="_blank" rel="noopener noreferrer">📐 比例計算與裁切器</a>
+          <a href="https://ivanusto.github.io/image-aspect-ratio-calculator/" target="_blank" rel="noopener noreferrer">
+            {t('footer.linkRatio', lang)}
+          </a>
           <span className="footer-divider">•</span>
-          <a href="https://github.com/ivanusto/md-to-wordpress-converter" target="_blank" rel="noopener noreferrer">🐙 GitHub 專案</a>
+          <a href="https://github.com/ivanusto/md-to-wordpress-converter" target="_blank" rel="noopener noreferrer">
+            {t('footer.linkRepo', lang)}
+          </a>
           <span className="footer-divider">•</span>
-          <a href="https://yblog.org/" target="_blank" rel="noopener noreferrer">🌐 優格網</a>
+          <a href="https://yblog.org/" target="_blank" rel="noopener noreferrer">
+            {t('footer.linkBlog', lang)}
+          </a>
         </div>
         <div className="footer-credits">
-          <span>WP-Markdown Converter &copy; 2026</span>
-          <span className="footer-divider">•</span>
-          <span>作者: <a href="https://github.com/ivanusto" target="_blank" rel="noopener noreferrer">Ivan Lin (@ivanusto)</a></span>
-          <span className="footer-divider">•</span>
-          <span>100% 瀏覽器端本地運算 · 隱私守護</span>
+          <span>{t('footer.credits', lang)}</span>
         </div>
       </footer>
     </div>

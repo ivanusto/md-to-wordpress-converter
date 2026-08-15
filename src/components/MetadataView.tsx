@@ -1,21 +1,23 @@
 import React from 'react';
 import { Tag, Folder, Calendar, User, Link, FileText, Copy, Check } from 'lucide-react';
-import type { FrontmatterData } from '../types';
+import type { FrontmatterData, AppLanguage } from '../types';
 import { copyPlainTextToClipboard } from '../utils/clipboardHelper';
+import { t } from '../utils/i18n';
 
 interface MetadataViewProps {
   frontmatter: FrontmatterData;
   onCopiedToast: (msg: string) => void;
+  lang: AppLanguage;
 }
 
-export const MetadataView: React.FC<MetadataViewProps> = ({ frontmatter, onCopiedToast }) => {
+export const MetadataView: React.FC<MetadataViewProps> = ({ frontmatter, onCopiedToast, lang }) => {
   const [copiedField, setCopiedField] = React.useState<string | null>(null);
 
   const handleCopy = async (fieldKey: string, textToCopy: string, label: string) => {
     const success = await copyPlainTextToClipboard(textToCopy);
     if (success) {
       setCopiedField(fieldKey);
-      onCopiedToast(`已複製${label}！`);
+      onCopiedToast(`${t('meta.copied', lang)}: ${label}`);
       setTimeout(() => setCopiedField(null), 2000);
     }
   };
@@ -26,15 +28,15 @@ export const MetadataView: React.FC<MetadataViewProps> = ({ frontmatter, onCopie
     return (
       <div className="empty-state">
         <FileText className="icon-xl text-muted" />
-        <h3>未檢測到 YAML 前言 (Frontmatter)</h3>
-        <p>可在 Markdown 最頂部加入以下 Frontmatter 區塊：</p>
+        <h3>{t('meta.emptyTitle', lang)}</h3>
+        <p>{t('meta.emptyDesc', lang)}</p>
         <pre className="code-example">
 {`---
-title: "我的文章標題"
+title: "My Article Title"
 slug: "my-post-slug"
-categories: ["技術教學"]
+categories: ["Tech", "Tutorial"]
 tags: ["WordPress", "Markdown"]
-excerpt: "文章簡短摘要..."
+excerpt: "Short article excerpt..."
 coverImage: "https://example.com/cover.jpg"
 ---`}
         </pre>
@@ -53,8 +55,8 @@ coverImage: "https://example.com/cover.jpg"
   return (
     <div className="metadata-container">
       <div className="metadata-banner">
-        <h4>📌 解析到的文章元數據 (Frontmatter)</h4>
-        <p>你可以直接複製下方各個欄位貼入 WordPress 文章設定欄</p>
+        <h4>{t('meta.bannerTitle', lang)}</h4>
+        <p>{t('meta.bannerDesc', lang)}</p>
       </div>
 
       <div className="metadata-grid">
@@ -62,14 +64,14 @@ coverImage: "https://example.com/cover.jpg"
           <div className="metadata-card full-width">
             <div className="metadata-card-header">
               <span className="metadata-label">
-                <FileText className="icon-xs" /> 文章標題 (Title)
+                <FileText className="icon-xs" /> {t('meta.titleLabel', lang)}
               </span>
               <button
                 className="btn btn-xs btn-ghost"
-                onClick={() => handleCopy('title', frontmatter.title!, '文章標題')}
+                onClick={() => handleCopy('title', frontmatter.title!, t('meta.titleLabel', lang))}
               >
                 {copiedField === 'title' ? <Check className="icon-xs text-green" /> : <Copy className="icon-xs" />}
-                <span>{copiedField === 'title' ? '已複製' : '複製標題'}</span>
+                <span>{copiedField === 'title' ? t('meta.copied', lang) : `${t('meta.copy', lang)} ${t('meta.titleLabel', lang)}`}</span>
               </button>
             </div>
             <div className="metadata-value title-value">{frontmatter.title}</div>
@@ -80,14 +82,14 @@ coverImage: "https://example.com/cover.jpg"
           <div className="metadata-card">
             <div className="metadata-card-header">
               <span className="metadata-label">
-                <Link className="icon-xs" /> 網址 Slug / 固定連結
+                <Link className="icon-xs" /> {t('meta.slugLabel', lang)}
               </span>
               <button
                 className="btn btn-xs btn-ghost"
-                onClick={() => handleCopy('slug', frontmatter.slug!, 'Slug')}
+                onClick={() => handleCopy('slug', frontmatter.slug!, t('meta.slugLabel', lang))}
               >
                 {copiedField === 'slug' ? <Check className="icon-xs text-green" /> : <Copy className="icon-xs" />}
-                <span>{copiedField === 'slug' ? '已複製' : '複製 Slug'}</span>
+                <span>{copiedField === 'slug' ? t('meta.copied', lang) : `${t('meta.copy', lang)} ${t('meta.slugLabel', lang)}`}</span>
               </button>
             </div>
             <div className="metadata-value code-font">{frontmatter.slug}</div>
@@ -98,14 +100,14 @@ coverImage: "https://example.com/cover.jpg"
           <div className="metadata-card">
             <div className="metadata-card-header">
               <span className="metadata-label">
-                <Folder className="icon-xs" /> 分類 (Categories)
+                <Folder className="icon-xs" /> {t('meta.categoriesLabel', lang)}
               </span>
               <button
                 className="btn btn-xs btn-ghost"
-                onClick={() => handleCopy('categories', categoriesString, '分類')}
+                onClick={() => handleCopy('categories', categoriesString, t('meta.categoriesLabel', lang))}
               >
                 {copiedField === 'categories' ? <Check className="icon-xs text-green" /> : <Copy className="icon-xs" />}
-                <span>{copiedField === 'categories' ? '已複製' : '複製分類'}</span>
+                <span>{copiedField === 'categories' ? t('meta.copied', lang) : `${t('meta.copy', lang)} ${t('meta.categoriesLabel', lang)}`}</span>
               </button>
             </div>
             <div className="metadata-tags">
@@ -124,14 +126,14 @@ coverImage: "https://example.com/cover.jpg"
           <div className="metadata-card full-width">
             <div className="metadata-card-header">
               <span className="metadata-label">
-                <Tag className="icon-xs" /> 標籤 (Tags)
+                <Tag className="icon-xs" /> {t('meta.tagsLabel', lang)}
               </span>
               <button
                 className="btn btn-xs btn-ghost"
-                onClick={() => handleCopy('tags', tagsString, '標籤')}
+                onClick={() => handleCopy('tags', tagsString, t('meta.tagsLabel', lang))}
               >
                 {copiedField === 'tags' ? <Check className="icon-xs text-green" /> : <Copy className="icon-xs" />}
-                <span>{copiedField === 'tags' ? '已複製' : '複製標籤 (逗號分隔)'}</span>
+                <span>{copiedField === 'tags' ? t('meta.copied', lang) : `${t('meta.copy', lang)} ${t('meta.tagsLabel', lang)}`}</span>
               </button>
             </div>
             <div className="metadata-tags">
@@ -150,14 +152,14 @@ coverImage: "https://example.com/cover.jpg"
           <div className="metadata-card full-width">
             <div className="metadata-card-header">
               <span className="metadata-label">
-                <FileText className="icon-xs" /> 文章摘要 (Excerpt)
+                <FileText className="icon-xs" /> {t('meta.excerptLabel', lang)}
               </span>
               <button
                 className="btn btn-xs btn-ghost"
-                onClick={() => handleCopy('excerpt', frontmatter.excerpt!, '摘要')}
+                onClick={() => handleCopy('excerpt', frontmatter.excerpt!, t('meta.excerptLabel', lang))}
               >
                 {copiedField === 'excerpt' ? <Check className="icon-xs text-green" /> : <Copy className="icon-xs" />}
-                <span>{copiedField === 'excerpt' ? '已複製' : '複製摘要'}</span>
+                <span>{copiedField === 'excerpt' ? t('meta.copied', lang) : `${t('meta.copy', lang)} ${t('meta.excerptLabel', lang)}`}</span>
               </button>
             </div>
             <div className="metadata-value excerpt-value">{frontmatter.excerpt}</div>
@@ -167,13 +169,13 @@ coverImage: "https://example.com/cover.jpg"
         {frontmatter.coverImage && (
           <div className="metadata-card full-width">
             <div className="metadata-card-header">
-              <span className="metadata-label">🖼️ 特色圖片 (Featured / Cover Image)</span>
+              <span className="metadata-label">{t('meta.coverLabel', lang)}</span>
               <button
                 className="btn btn-xs btn-ghost"
-                onClick={() => handleCopy('cover', frontmatter.coverImage!, '封面圖片網址')}
+                onClick={() => handleCopy('cover', frontmatter.coverImage!, t('meta.coverLabel', lang))}
               >
                 {copiedField === 'cover' ? <Check className="icon-xs text-green" /> : <Copy className="icon-xs" />}
-                <span>{copiedField === 'cover' ? '已複製' : '複製圖片網址'}</span>
+                <span>{copiedField === 'cover' ? t('meta.copied', lang) : t('meta.copy', lang)}</span>
               </button>
             </div>
             <div className="metadata-cover-preview">
@@ -188,7 +190,7 @@ coverImage: "https://example.com/cover.jpg"
             {frontmatter.date && (
               <div>
                 <span className="metadata-label">
-                  <Calendar className="icon-xs" /> 發布日期
+                  <Calendar className="icon-xs" /> {t('meta.dateLabel', lang)}
                 </span>
                 <div className="metadata-value">{frontmatter.date}</div>
               </div>
@@ -196,7 +198,7 @@ coverImage: "https://example.com/cover.jpg"
             {frontmatter.author && (
               <div>
                 <span className="metadata-label">
-                  <User className="icon-xs" /> 作者
+                  <User className="icon-xs" /> {t('meta.authorLabel', lang)}
                 </span>
                 <div className="metadata-value">{frontmatter.author}</div>
               </div>
