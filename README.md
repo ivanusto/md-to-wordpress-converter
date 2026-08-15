@@ -38,7 +38,7 @@ An open-source, privacy-first, 100% client-side web application built with React
 ## 🛠️ Free Sister Web Tools / 更多免費實用線上工具
 
 Check out these other free, privacy-first web tools / 歡迎體驗同系列純前端線上工具：
-- 🛡️ **[AI Watermarks & Provenance Remover](https://ivanusto.github.io/watermarks-remover/)** — Strip multi-vendor AI provenance marks (ChatGPT, Claude, Gemini invisible Unicode, C2PA, EXIF metadata).
+- 🛡️ **[AI Watermarks & Provenance Remover](https://ivanusto.github.io/watermarks-remover-web/)** — Strip multi-vendor AI provenance marks (ChatGPT, Claude, Gemini invisible Unicode, C2PA, EXIF metadata).
 - 📐 **[Aspect Ratio & Crop Pro](https://ivanusto.github.io/image-aspect-ratio-calculator/)** — Smart image/video aspect ratio calculator, preset matcher, and real-time center-cropper.
 
 ---
