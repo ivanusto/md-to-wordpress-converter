@@ -64,9 +64,18 @@ npm run dev
 # Run the test suite (golden tests for both cleaners)
 npm test
 
+# Check whether the code these cleaners were ported from has changed upstream
+npm run check:upstream
+
 # Build production bundle (output to ./dist)
 npm run build
 ```
+
+---
+
+## 🔄 Keeping the ported cleaners in sync
+
+`src/utils/aiWatermarkCleaner.ts` and `src/utils/imageMeta.ts` are hand-written ports of code that lives in [watermarks-remover-web](https://github.com/ivanusto/watermarks-remover-web) and, further upstream, in [watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover). Nothing in this repository can tell when that code changes, so `.github/workflows/upstream-check.yml` hashes those four files daily and opens an issue when one moves; it closes the issue again once the hashes match. The recorded hashes live in `scripts/upstream-sources.json` and should be updated in the same commit that re-ports the change.
 
 ---
 

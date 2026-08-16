@@ -11,7 +11,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:upstream": "node scripts/check-upstream.mjs"
   },
   "dependencies": {
     "highlight.js": "^11.11.1",

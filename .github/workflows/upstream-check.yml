@@ -1,0 +1,112 @@
+name: Check ported sources for drift
+
+# src/utils/aiWatermarkCleaner.ts and src/utils/imageMeta.ts are hand-written
+# ports of code in other repositories. Nothing here notices when that code
+# changes, so this job watches it and files an issue when it moves.
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Compare upstream hashes
+        id: check
+        continue-on-error: true
+        run: node scripts/check-upstream.mjs
+
+      - name: Fail the run if sources could not be fetched
+        if: steps.check.outcome == 'failure' && steps.check.outputs.drift != 'true'
+        run: |
+          echo "::error::Could not reach one or more upstream sources; drift is unknown."
+          exit 1
+
+      - name: Open or update the drift issue
+        if: steps.check.outputs.drift == 'true'
+        uses: actions/github-script@v7
+        env:
+          DRIFT_BODY: ${{ steps.check.outputs.body }}
+        with:
+          script: |
+            const title = 'Ported cleaners are out of sync with their upstream sources';
+            const marker = '<!-- upstream-drift-check -->';
+            const body = `${marker}\n\n${process.env.DRIFT_BODY}\n\n_Checked by \`.github/workflows/upstream-check.yml\` on ${new Date().toISOString().slice(0, 10)}._`;
+
+            const existing = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            const open = existing.find((i) => !i.pull_request && i.body && i.body.includes(marker));
+
+            if (open) {
+              if (open.body.split(marker)[1].trim() === body.split(marker)[1].trim()) {
+                core.info(`Issue #${open.number} already describes this drift; leaving it alone.`);
+                return;
+              }
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: open.number,
+                body,
+              });
+              core.info(`Updated issue #${open.number}.`);
+              return;
+            }
+
+            const created = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+            });
+            core.info(`Opened issue #${created.data.number}.`);
+
+      - name: Close the drift issue once everything matches again
+        if: steps.check.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- upstream-drift-check -->';
+            const existing = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            for (const issue of existing) {
+              if (issue.pull_request || !issue.body || !issue.body.includes(marker)) continue;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: 'All watched sources match the recorded hashes again — closing.',
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+              });
+              core.info(`Closed issue #${issue.number}.`);
+            }
