@@ -58,4 +58,5 @@ export interface ConverterOptions {
   nfkcNormalize: boolean;
   stripEmojiGlue: boolean;
   stripBidiMarks: boolean;
+  stripPrivateUseChars: boolean;
 }

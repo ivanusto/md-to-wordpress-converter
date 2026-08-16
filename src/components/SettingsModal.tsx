@@ -98,6 +98,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <label className="checkbox-setting" style={{ marginTop: '8px' }}>
               <input
                 type="checkbox"
+                checked={options.stripPrivateUseChars}
+                onChange={(e) => handleChange('stripPrivateUseChars', e.target.checked)}
+              />
+              <div className="checkbox-label-text">
+                <strong>{t('settings.stripPrivateUse', lang)}</strong>
+                <p>{t('settings.stripPrivateUseDesc', lang)}</p>
+              </div>
+            </label>
+
+            <label className="checkbox-setting" style={{ marginTop: '8px' }}>
+              <input
+                type="checkbox"
                 checked={options.stripEmojiGlue}
                 onChange={(e) => handleChange('stripEmojiGlue', e.target.checked)}
               />

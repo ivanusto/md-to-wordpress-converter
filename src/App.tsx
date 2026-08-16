@@ -31,6 +31,7 @@ const DEFAULT_OPTIONS: ConverterOptions = {
   nfkcNormalize: false,
   stripEmojiGlue: false,
   stripBidiMarks: false,
+  stripPrivateUseChars: false,
 };
 
 /** Map the app's settings onto the Layer A cleaner's options. */
@@ -41,6 +42,7 @@ function cleanerOptions(o: ConverterOptions): CleanAiWatermarksOptions {
     nfkc: o.nfkcNormalize,
     stripEmojiGlue: o.stripEmojiGlue,
     stripBidi: o.stripBidiMarks,
+    stripPrivateUse: o.stripPrivateUseChars,
   };
 }
 

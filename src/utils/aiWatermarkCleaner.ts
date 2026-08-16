@@ -1,8 +1,9 @@
 /**
  * AI Invisible Watermark & Provenance Cleaner (Layer A)
  * Strips zero-width chars, invisible unicode markers, bidi overrides, tag
- * characters, variation selectors, private-use characters, any other format
- * (Cf) character, and homoglyphs used by LLMs (ChatGPT, Claude, Gemini, etc.)
+ * characters, variation selectors, any other format (Cf) character, and
+ * homoglyphs used by LLMs (ChatGPT, Claude, Gemini, etc.); private-use
+ * characters are opt-in.
  *
  * Full port of the decision procedure in `text_unicode.py` from
  * guillaumemeyer/watermarks-remover (MIT), including its "preserve multilingual
@@ -12,6 +13,10 @@
  * Arabic/Syriac format marks, RTL directional marks and balanced LRE/RLE…PDF
  * pairs — are kept, while the same characters used as stray carriers are still
  * removed. `stripEmojiGlue` and `stripBidi` turn those exemptions off.
+ *
+ * One deliberate divergence from upstream: private-use characters are kept
+ * unless `stripPrivateUse` is set, because icon fonts live there and losing a
+ * glyph from a published post is worse than leaving a rare carrier behind.
  */
 
 // Invisible / format codepoints commonly used for AI steganography or dirty copy-pastes
@@ -239,6 +244,12 @@ export interface CleanAiWatermarksOptions {
   aggressiveHomoglyphs?: boolean;
   /** Apply Unicode NFKC after cleaning (fullwidth → ASCII, ligatures, …). */
   nfkc?: boolean;
+  /**
+   * Strip private-use characters. Off by default, unlike upstream: icon fonts
+   * (Font Awesome and friends) address their glyphs through this area, and
+   * silently deleting them from a post is worse than leaving a rare carrier in.
+   */
+  stripPrivateUse?: boolean;
 }
 
 export interface CleanAiWatermarksResult {
@@ -265,6 +276,7 @@ interface DecideContext {
   stripEmojiGlue: boolean;
   stripBidi: boolean;
   treatConfusables: boolean;
+  stripPrivateUse: boolean;
 }
 
 function decide(cp: number, ctx: DecideContext): Action {
@@ -304,7 +316,8 @@ function decide(cp: number, ctx: DecideContext): Action {
     if (ORTHOGRAPHIC_CF.has(cp)) return 'keep';
   }
 
-  if (STRIP_CODEPOINTS.has(cp) || isVarSelectorSupp(cp) || isTagChar(cp) || isPrivateUse(cp)) return 'strip';
+  if (STRIP_CODEPOINTS.has(cp) || isVarSelectorSupp(cp) || isTagChar(cp)) return 'strip';
+  if (ctx.stripPrivateUse && isPrivateUse(cp)) return 'strip';
   if (ctx.normalizeSpaces && SPACE_HOMOGLYPHS[cp] !== undefined) return 'space';
   if (ctx.treatConfusables && LATIN_CONFUSABLES[cp] !== undefined) return 'confusable';
   if (RE_CF.test(chr(cp)) && SPACE_HOMOGLYPHS[cp] === undefined) return 'strip';
@@ -382,6 +395,7 @@ export function cleanAiWatermarks(
   const stripEmojiGlue = options.stripEmojiGlue === true;
   const stripBidi = options.stripBidi === true;
   const treatConfusables = options.aggressiveHomoglyphs === true;
+  const stripPrivateUse = options.stripPrivateUse === true;
 
   // Iterate by code point so surrogate pairs stay intact.
   const cps = Array.from(text, (ch) => ch.codePointAt(0) as number);
@@ -407,6 +421,7 @@ export function cleanAiWatermarks(
       stripEmojiGlue,
       stripBidi,
       treatConfusables,
+      stripPrivateUse,
     });
 
     if (action === 'strip') {
