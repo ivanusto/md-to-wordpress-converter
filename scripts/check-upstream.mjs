@@ -96,8 +96,7 @@ async function main() {
     ...mirrors.map((m) => `- \`${m}\``),
     '',
     'Re-port the affected logic, then update `sha256` in `scripts/upstream-sources.json` in the same commit so this check goes quiet again.',
-    '',
-    'Note that `tests/golden/imageMeta.json` holds values generated from `watermarks-remover-web`; if that file changed, the golden values have to be regenerated too, otherwise the tests will keep asserting the old behaviour.',
+    ...(manifest.followUp ? ['', manifest.followUp] : []),
   ].join('\n');
 
   console.log(`\n${body}`);
