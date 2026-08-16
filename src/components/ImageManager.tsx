@@ -2,12 +2,14 @@ import React from 'react';
 import { Image as ImageIcon, AlertTriangle, CheckCircle2, Link2, ArrowRight } from 'lucide-react';
 import type { ExtractedImage, AppLanguage } from '../types';
 import { t } from '../utils/i18n';
+import { ImageMetaCleaner } from './ImageMetaCleaner';
 
 interface ImageManagerProps {
   images: ExtractedImage[];
   imageReplacements: Record<string, string>;
   onUpdateReplacement: (originalUrl: string, newUrl: string) => void;
   lang: AppLanguage;
+  onShowToast?: (msg: string) => void;
 }
 
 export const ImageManager: React.FC<ImageManagerProps> = ({
@@ -15,13 +17,17 @@ export const ImageManager: React.FC<ImageManagerProps> = ({
   imageReplacements,
   onUpdateReplacement,
   lang,
+  onShowToast,
 }) => {
   if (images.length === 0) {
     return (
-      <div className="empty-state">
-        <ImageIcon className="icon-xl text-muted" />
-        <h3>{t('images.emptyTitle', lang)}</h3>
-        <p>{t('images.emptyDesc', lang)}</p>
+      <div className="image-manager-container">
+        <div className="empty-state">
+          <ImageIcon className="icon-xl text-muted" />
+          <h3>{t('images.emptyTitle', lang)}</h3>
+          <p>{t('images.emptyDesc', lang)}</p>
+        </div>
+        <ImageMetaCleaner lang={lang} onShowToast={onShowToast} />
       </div>
     );
   }
@@ -36,6 +42,8 @@ export const ImageManager: React.FC<ImageManagerProps> = ({
           <p>{t('images.desc', lang)}</p>
         </div>
       </div>
+
+      <ImageMetaCleaner lang={lang} onShowToast={onShowToast} />
 
       {localImagesCount > 0 && (
         <div className="alert-banner alert-warning">

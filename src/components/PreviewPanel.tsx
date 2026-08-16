@@ -213,6 +213,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
             imageReplacements={imageReplacements}
             onUpdateReplacement={onUpdateImageReplacement}
             lang={lang}
+            onShowToast={onShowToast}
           />
         )}
       </div>

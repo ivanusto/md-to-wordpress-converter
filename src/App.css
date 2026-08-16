@@ -182,3 +182,96 @@
     border-right-color: var(--border);
   }
 }
+
+/* ---------------------------------------------- image metadata cleaner */
+.imgclean-section {
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.04);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+.imgclean-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.imgclean-header strong {
+  display: block;
+  font-size: 0.95rem;
+}
+.imgclean-header p {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted, #64748b);
+  line-height: 1.5;
+}
+.imgclean-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 20px 12px;
+  border: 2px dashed rgba(99, 102, 241, 0.35);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.88rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+.imgclean-dropzone:hover,
+.imgclean-dropzone.dragging {
+  border-color: var(--primary, #6366f1);
+  background: rgba(99, 102, 241, 0.08);
+}
+.imgclean-dropzone small {
+  font-size: 0.75rem;
+  color: var(--text-muted, #64748b);
+}
+.imgclean-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.imgclean-result {
+  border: 1px solid var(--border, rgba(148, 163, 184, 0.3));
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: var(--bg-card, #fff);
+}
+.imgclean-result.has-error {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+.imgclean-result-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+}
+.imgclean-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.imgclean-size {
+  margin: 6px 0;
+  font-size: 0.8rem;
+  color: var(--text-muted, #64748b);
+}
+.imgclean-error {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: #b45309;
+}
+.imgclean-findings {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  font-size: 0.75rem;
+  color: var(--text-muted, #64748b);
+  line-height: 1.6;
+  word-break: break-word;
+}

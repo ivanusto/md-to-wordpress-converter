@@ -1,0 +1,786 @@
+{
+  "default#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#2": {
+    "cleaned": "bidi evil and ⁦iso⁩ and ‎‏ marks",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#3": {
+    "cleaned": "emoji glue: ❤️ ⚠️ 👨‍👩‍👧 ❤️‍🔥 keycap 1️⃣",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#4": {
+    "cleaned": "flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿 end",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#5": {
+    "cleaned": "persian می‌روم devanagari क्‍ष isolated joiner",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#6": {
+    "cleaned": "mongolian ᠠ᠋ letter, isolated ; khmer ក឴ ok, stray ; hangul ᄀᅠ ok, stray ",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#7": {
+    "cleaned": "arabic cf ؀١ ۝٢ syriac ܏ kaithi 𑂽",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#8": {
+    "cleaned": "spaces: nbsp thin  ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 5,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#9": {
+    "cleaned": "confusables: АВС аео ＡＢＣ ａｂｃ",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#10": {
+    "cleaned": "vs: abc d ; tags ; pua 󰀀􀀀",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#12": {
+    "cleaned": "nfkc: ＡＢ   ① ﬁ",
+    "removedCount": 0,
+    "replacedSpaceCount": 1,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#13": {
+    "cleaned": "mixed 😀️‍💩 end 🏴 stray",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#2": {
+    "cleaned": "bidi evil and ⁦iso⁩ and ‎‏ marks",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#3": {
+    "cleaned": "emoji glue: ❤️ ⚠️ 👨‍👩‍👧 ❤️‍🔥 keycap 1️⃣",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#4": {
+    "cleaned": "flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿 end",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#5": {
+    "cleaned": "persian می‌روم devanagari क्‍ष isolated joiner",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#6": {
+    "cleaned": "mongolian ᠠ᠋ letter, isolated ; khmer ក឴ ok, stray ; hangul ᄀᅠ ok, stray ",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#7": {
+    "cleaned": "arabic cf ؀١ ۝٢ syriac ܏ kaithi 𑂽",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#8": {
+    "cleaned": "spaces: nbsp thin  ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 5,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#9": {
+    "cleaned": "confusables: АВС аео ABC abc",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 6
+  },
+  "nfkc#10": {
+    "cleaned": "vs: abc d ; tags ; pua 󰀀􀀀",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#12": {
+    "cleaned": "nfkc: AB   1 fi",
+    "removedCount": 0,
+    "replacedSpaceCount": 1,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 4
+  },
+  "nfkc#13": {
+    "cleaned": "mixed 😀️‍💩 end 🏴 stray",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#2": {
+    "cleaned": "bidi evil and ⁦iso⁩ and ‎‏ marks",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#3": {
+    "cleaned": "emoji glue: ❤️ ⚠️ 👨‍👩‍👧 ❤️‍🔥 keycap 1️⃣",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#4": {
+    "cleaned": "flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿 end",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#5": {
+    "cleaned": "persian می‌روم devanagari क्‍ष isolated joiner",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#6": {
+    "cleaned": "mongolian ᠠ᠋ letter, isolated ; khmer ក឴ ok, stray ; hangul ᄀᅠ ok, stray ",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#7": {
+    "cleaned": "arabic cf ؀١ ۝٢ syriac ܏ kaithi 𑂽",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#8": {
+    "cleaned": "spaces: nbsp thin  ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 5,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#9": {
+    "cleaned": "confusables: ABC aeo ABC abc",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 12,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#10": {
+    "cleaned": "vs: abc d ; tags ; pua 󰀀􀀀",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#12": {
+    "cleaned": "nfkc: AB   ① ﬁ",
+    "removedCount": 0,
+    "replacedSpaceCount": 1,
+    "replacedConfusableCount": 2,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#13": {
+    "cleaned": "mixed 😀️‍💩 end 🏴 stray",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#2": {
+    "cleaned": "bidi evil and ⁦iso⁩ and ‎‏ marks",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#3": {
+    "cleaned": "emoji glue: ❤️ ⚠️ 👨‍👩‍👧 ❤️‍🔥 keycap 1️⃣",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#4": {
+    "cleaned": "flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿 end",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#5": {
+    "cleaned": "persian می‌روم devanagari क्‍ष isolated joiner",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#6": {
+    "cleaned": "mongolian ᠠ᠋ letter, isolated ; khmer ក឴ ok, stray ; hangul ᄀᅠ ok, stray ",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#7": {
+    "cleaned": "arabic cf ؀١ ۝٢ syriac ܏ kaithi 𑂽",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#8": {
+    "cleaned": "spaces: nbsp thin 　ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#9": {
+    "cleaned": "confusables: АВС аео ＡＢＣ ａｂｃ",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#10": {
+    "cleaned": "vs: abc d ; tags ; pua 󰀀􀀀",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#12": {
+    "cleaned": "nfkc: ＡＢ 　 ① ﬁ",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#13": {
+    "cleaned": "mixed 😀️‍💩 end 🏴 stray",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#2": {
+    "cleaned": "bidi evil and ⁦iso⁩ and ‎‏ marks",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#3": {
+    "cleaned": "emoji glue: ❤ ⚠ 👨👩👧 ❤🔥 keycap 1⃣",
+    "removedCount": 7,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#4": {
+    "cleaned": "flag: 🏴 end",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#5": {
+    "cleaned": "persian میروم devanagari क्ष isolated joiner",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#6": {
+    "cleaned": "mongolian ᠠ letter, isolated ; khmer ក ok, stray ; hangul ᄀ ok, stray ",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#7": {
+    "cleaned": "arabic cf ١ ٢ syriac  kaithi ",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#8": {
+    "cleaned": "spaces: nbsp thin  ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 5,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#9": {
+    "cleaned": "confusables: АВС аео ＡＢＣ ａｂｃ",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#10": {
+    "cleaned": "vs: abc d ; tags ; pua 󰀀􀀀",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#12": {
+    "cleaned": "nfkc: ＡＢ   ① ﬁ",
+    "removedCount": 0,
+    "replacedSpaceCount": 1,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#13": {
+    "cleaned": "mixed 😀💩 end 🏴 stray",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#2": {
+    "cleaned": "bidi evil and iso and  marks",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#3": {
+    "cleaned": "emoji glue: ❤️ ⚠️ 👨‍👩‍👧 ❤️‍🔥 keycap 1️⃣",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#4": {
+    "cleaned": "flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿 end",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#5": {
+    "cleaned": "persian می‌روم devanagari क्‍ष isolated joiner",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#6": {
+    "cleaned": "mongolian ᠠ᠋ letter, isolated ; khmer ក឴ ok, stray ; hangul ᄀᅠ ok, stray ",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#7": {
+    "cleaned": "arabic cf ؀١ ۝٢ syriac ܏ kaithi 𑂽",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#8": {
+    "cleaned": "spaces: nbsp thin  ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 5,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#9": {
+    "cleaned": "confusables: АВС аео ＡＢＣ ａｂｃ",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#10": {
+    "cleaned": "vs: abc d ; tags ; pua 󰀀􀀀",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#12": {
+    "cleaned": "nfkc: ＡＢ   ① ﬁ",
+    "removedCount": 0,
+    "replacedSpaceCount": 1,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#13": {
+    "cleaned": "mixed 😀️‍💩 end 🏴 stray",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#2": {
+    "cleaned": "bidi evil and ⁦iso⁩ and ‎‏ marks",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#3": {
+    "cleaned": "emoji glue: ❤️ ⚠️ 👨‍👩‍👧 ❤️‍🔥 keycap 1️⃣",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#4": {
+    "cleaned": "flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿 end",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#5": {
+    "cleaned": "persian می‌روم devanagari क्‍ष isolated joiner",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#6": {
+    "cleaned": "mongolian ᠠ᠋ letter, isolated ; khmer ក឴ ok, stray ; hangul ᄀᅠ ok, stray ",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#7": {
+    "cleaned": "arabic cf ؀١ ۝٢ syriac ܏ kaithi 𑂽",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#8": {
+    "cleaned": "spaces: nbsp thin  ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 5,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#9": {
+    "cleaned": "confusables: АВС аео ＡＢＣ ａｂｃ",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#10": {
+    "cleaned": "vs: abc d ; tags ; pua ",
+    "removedCount": 8,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#12": {
+    "cleaned": "nfkc: ＡＢ   ① ﬁ",
+    "removedCount": 0,
+    "replacedSpaceCount": 1,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#13": {
+    "cleaned": "mixed 😀️‍💩 end 🏴 stray",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#0": {
+    "cleaned": "plain ascii",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#1": {
+    "cleaned": "zerowidthspace andsofthyphen  bom",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#2": {
+    "cleaned": "bidi evil and iso and  marks",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#3": {
+    "cleaned": "emoji glue: ❤ ⚠ 👨👩👧 ❤🔥 keycap 1⃣",
+    "removedCount": 7,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#4": {
+    "cleaned": "flag: 🏴 end",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#5": {
+    "cleaned": "persian میروم devanagari क्ष isolated joiner",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#6": {
+    "cleaned": "mongolian ᠠ letter, isolated ; khmer ក ok, stray ; hangul ᄀ ok, stray ",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#7": {
+    "cleaned": "arabic cf ١ ٢ syriac  kaithi ",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#8": {
+    "cleaned": "spaces: nbsp thin  ideo narrow  figure ",
+    "removedCount": 0,
+    "replacedSpaceCount": 5,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#9": {
+    "cleaned": "confusables: ABC aeo ABC abc",
+    "removedCount": 0,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 12,
+    "nfkcChangedCount": 0
+  },
+  "everything#10": {
+    "cleaned": "vs: abc d ; tags ; pua ",
+    "removedCount": 8,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#11": {
+    "cleaned": "other cf:  shorthand,  egyptian,   not cf",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#12": {
+    "cleaned": "nfkc: AB   1 fi",
+    "removedCount": 0,
+    "replacedSpaceCount": 1,
+    "replacedConfusableCount": 2,
+    "nfkcChangedCount": 2
+  },
+  "everything#13": {
+    "cleaned": "mixed 😀💩 end 🏴 stray",
+    "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  }
+}

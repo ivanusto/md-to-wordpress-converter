@@ -1,0 +1,406 @@
+{
+  "png_clean": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "png_text": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG iTXt: digitalSourceType, trainedAlgorithmicMedia, algorithmicMedia"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt",
+          "drop chunk iTXt"
+        ]
+      },
+      "false": {
+        "sha": "7d2f312ac3fcd8bf",
+        "length": 100,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      }
+    }
+  },
+  "png_exif_c2pa": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG chunk caBX (possible C2PA container)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "cd3371a8c93ecc30",
+        "length": 110,
+        "actions": [
+          "drop chunk eXIf",
+          "drop chunk caBX"
+        ]
+      },
+      "false": {
+        "sha": "cd3371a8c93ecc30",
+        "length": 110,
+        "actions": [
+          "drop chunk eXIf",
+          "drop chunk caBX"
+        ]
+      }
+    }
+  },
+  "png_private_c2pa": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "byte-scan C2PA markers: contentcredentials"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "b1668b619fa0b5f3",
+        "length": 84,
+        "actions": [
+          "drop chunk prVt (C2PA marker in payload)"
+        ]
+      },
+      "false": {
+        "sha": "b1668b619fa0b5f3",
+        "length": 84,
+        "actions": [
+          "drop chunk prVt (C2PA marker in payload)"
+        ]
+      }
+    }
+  },
+  "jpeg_clean": {
+    "format": "jpeg",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "749f8fed733d15a4",
+        "length": 141,
+        "actions": [
+          "preserved entropy-coded scan (SOS→EOF)"
+        ]
+      },
+      "false": {
+        "sha": "749f8fed733d15a4",
+        "length": 141,
+        "actions": [
+          "preserved entropy-coded scan (SOS→EOF)"
+        ]
+      }
+    }
+  },
+  "jpeg_exif_xmp": {
+    "format": "jpeg",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "JPEG APP1: digitalSourceType, trainedAlgorithmicMedia, algorithmicMedia"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "749f8fed733d15a4",
+        "length": 141,
+        "actions": [
+          "drop APP1",
+          "drop APP1",
+          "drop COM comment",
+          "preserved entropy-coded scan (SOS→EOF)"
+        ]
+      },
+      "false": {
+        "sha": "cf3ea0aa36602dbf",
+        "length": 155,
+        "actions": [
+          "drop APP1 (AI/C2PA markers)",
+          "drop COM comment",
+          "preserved entropy-coded scan (SOS→EOF)"
+        ]
+      }
+    }
+  },
+  "jpeg_c2pa": {
+    "format": "jpeg",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "JPEG APP11 segment (JUMBF/C2PA common)",
+        "JPEG APP11: c2pa, C2PA, c2pa, C2PA, jumb, JUMB"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "749f8fed733d15a4",
+        "length": 141,
+        "actions": [
+          "drop APP11 (C2PA/JUMBF)",
+          "drop APP2",
+          "drop APP14",
+          "preserved entropy-coded scan (SOS→EOF)"
+        ]
+      },
+      "false": {
+        "sha": "0eb5b9fc61d52793",
+        "length": 193,
+        "actions": [
+          "drop APP11 (C2PA/JUMBF)",
+          "preserved entropy-coded scan (SOS→EOF)"
+        ]
+      }
+    }
+  },
+  "webp_clean": {
+    "format": "webp",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "5fc1abdd183fd603",
+        "length": 50,
+        "actions": [
+          "no WebP metadata chunks removed (already clean or none matched)"
+        ]
+      },
+      "false": {
+        "sha": "5fc1abdd183fd603",
+        "length": 50,
+        "actions": [
+          "no WebP metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "webp_meta": {
+    "format": "webp",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "WebP EXIF: OpenAI",
+        "WebP XMP : digitalSourceType, trainedAlgorithmicMedia, algorithmicMedia"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "5fc1abdd183fd603",
+        "length": 50,
+        "actions": [
+          "drop WebP chunk ICCP",
+          "drop WebP chunk EXIF",
+          "drop WebP chunk XMP "
+        ]
+      },
+      "false": {
+        "sha": "18354d2383e88d26",
+        "length": 68,
+        "actions": [
+          "drop WebP chunk EXIF",
+          "drop WebP chunk XMP "
+        ]
+      }
+    }
+  },
+  "webp_c2pa": {
+    "format": "webp",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "WebP C2PA chunk"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "5fc1abdd183fd603",
+        "length": 50,
+        "actions": [
+          "drop WebP chunk C2PA"
+        ]
+      },
+      "false": {
+        "sha": "5fc1abdd183fd603",
+        "length": 50,
+        "actions": [
+          "drop WebP chunk C2PA"
+        ]
+      }
+    }
+  },
+  "avif_clean": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "7bc10e0996fde171",
+        "length": 76,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      },
+      "false": {
+        "sha": "7bc10e0996fde171",
+        "length": 76,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "avif_xmp_c2pa": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "AVIF XMP uuid box: digitalSourceType, trainedAlgorithmicMedia, algorithmicMedia",
+        "AVIF top-level box jumb (C2PA/JUMBF manifest)",
+        "AVIF meta/iinf: Generated by, OpenAI"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "9091f606905efeb8",
+        "length": 108,
+        "actions": [
+          "drop top-level uuid box (XMP metadata)",
+          "drop top-level jumb box (C2PA/JUMBF)"
+        ]
+      },
+      "false": {
+        "sha": "9091f606905efeb8",
+        "length": 108,
+        "actions": [
+          "drop top-level uuid box (XMP metadata)",
+          "drop top-level jumb box (C2PA/JUMBF)"
+        ]
+      }
+    }
+  },
+  "avif_uuid_plain": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4efb107ee8347de9",
+        "length": 40,
+        "actions": [
+          "drop top-level uuid box (UUID metadata)"
+        ]
+      },
+      "false": {
+        "sha": "4d0ab1fbefcad67a",
+        "length": 84,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "heic_meta": {
+    "format": "heic",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "HEIC meta XMP uuid: digitalSourceType, trainedAlgorithmicMedia, algorithmicMedia",
+        "HEIC meta/xml : contentcredentials, ContentCredentials, contentcredentials"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "3d8304b4512fa7ac",
+        "length": 76,
+        "actions": [
+          "drop meta sub-box uuid (XMP metadata)",
+          "drop meta sub-box xml  (XML metadata)"
+        ]
+      },
+      "false": {
+        "sha": "3d8304b4512fa7ac",
+        "length": 76,
+        "actions": [
+          "drop meta sub-box uuid (XMP metadata)",
+          "drop meta sub-box xml  (XML metadata)"
+        ]
+      }
+    }
+  },
+  "heic_c2pa_box": {
+    "format": "heic",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "HEIC top-level box c2pa (C2PA/JUMBF manifest)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "54783938d7ee7193",
+        "length": 76,
+        "actions": [
+          "drop top-level c2pa box (C2PA/JUMBF)"
+        ]
+      },
+      "false": {
+        "sha": "54783938d7ee7193",
+        "length": 76,
+        "actions": [
+          "drop top-level c2pa box (C2PA/JUMBF)"
+        ]
+      }
+    }
+  }
+}
