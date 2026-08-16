@@ -54,4 +54,8 @@ export interface ConverterOptions {
   includeFrontmatterInOutput: boolean;
   autoCleanAiWatermarks: boolean;
   normalizeSpaceHomoglyphs: boolean;
+  replaceLatinConfusables: boolean;
+  nfkcNormalize: boolean;
+  stripEmojiGlue: boolean;
+  stripBidiMarks: boolean;
 }

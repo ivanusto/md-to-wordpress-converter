@@ -1,15 +1,17 @@
 /**
  * AI Invisible Watermark & Provenance Cleaner (Layer A)
- * Strips zero-width chars, invisible unicode markers, bidi overrides,
- * tag characters, variation selectors, and homoglyphs used by LLMs (ChatGPT, Claude, Gemini, etc.)
+ * Strips zero-width chars, invisible unicode markers, bidi overrides, tag
+ * characters, variation selectors, private-use characters, any other format
+ * (Cf) character, and homoglyphs used by LLMs (ChatGPT, Claude, Gemini, etc.)
  *
- * The decision rules follow `text_unicode.py` from guillaumemeyer/watermarks-remover
- * (MIT), including its "preserve multilingual Unicode" pass: characters that are
- * load-bearing in real text — emoji ZWJ/VS sequences, ZWNJ/ZWJ inside Arabic,
- * Indic, Khmer or Mongolian words, complete flag tag sequences, CJK and Mongolian
- * variation sequences, RTL directional marks and balanced LRE/RLE…PDF pairs — are
- * kept, while the same characters used as stray carriers are still removed.
- * Set `stripEmojiGlue` for the paranoid mode that strips them all.
+ * Full port of the decision procedure in `text_unicode.py` from
+ * guillaumemeyer/watermarks-remover (MIT), including its "preserve multilingual
+ * Unicode" pass: characters that are load-bearing in real text — emoji ZWJ/VS
+ * sequences, ZWNJ/ZWJ inside Arabic, Indic, Khmer or Mongolian words, complete
+ * flag tag sequences, CJK and Mongolian variation sequences, orthographic
+ * Arabic/Syriac format marks, RTL directional marks and balanced LRE/RLE…PDF
+ * pairs — are kept, while the same characters used as stray carriers are still
+ * removed. `stripEmojiGlue` and `stripBidi` turn those exemptions off.
  */
 
 // Invisible / format codepoints commonly used for AI steganography or dirty copy-pastes
@@ -92,6 +94,25 @@ export const SPACE_HOMOGLYPHS: Record<number, string> = {
   0x3000: ' ', // ideographic space
 };
 
+// Cyrillic and fullwidth letters that read as ASCII. Aggressive: enabling this can
+// alter legitimate non-Latin text, so it is opt-in.
+export const LATIN_CONFUSABLES: Record<number, string> = {
+  0x0410: 'A', 0x0412: 'B', 0x0415: 'E', 0x041a: 'K', 0x041c: 'M',
+  0x041d: 'H', 0x041e: 'O', 0x0420: 'P', 0x0421: 'C', 0x0422: 'T',
+  0x0425: 'X', 0x0430: 'a', 0x0435: 'e', 0x043e: 'o', 0x0440: 'p',
+  0x0441: 'c', 0x0443: 'y', 0x0445: 'x', 0x0456: 'i',
+};
+for (let i = 0; i < 26; i++) {
+  LATIN_CONFUSABLES[0xff21 + i] = String.fromCharCode(0x41 + i); // fullwidth A-Z
+  LATIN_CONFUSABLES[0xff41 + i] = String.fromCharCode(0x61 + i); // fullwidth a-z
+}
+
+// Format characters that carry meaning in Arabic, Syriac and Kaithi orthography.
+// Without this exemption the Cf catch-all below would delete them.
+const ORTHOGRAPHIC_CF = new Set<number>([
+  0x0600, 0x0601, 0x0602, 0x0603, 0x0604, 0x0605, 0x06dd, 0x070f, 0x08e2, 0x110bd, 0x110cd,
+]);
+
 // Directional marks and isolates are legitimate in mixed RTL/LTR prose. Embeddings
 // and overrides stay destructive unless they form a balanced LRE/RLE…PDF pair.
 const PRESERVABLE_BIDI = new Set<number>([0x061c, 0x200e, 0x200f, 0x2066, 0x2067, 0x2068, 0x2069]);
@@ -112,10 +133,13 @@ const JOINING_SCRIPTS: Array<[number, number, string]> = [
 
 const RE_LM = /^[\p{L}\p{M}]$/u;
 const RE_L = /^\p{L}$/u;
+const RE_CF = /^\p{Cf}$/u;
 const chr = (cp: number): string => String.fromCodePoint(cp);
 
-const isTagChar = (cp: number): boolean => cp >= 0xe0000 && cp <= 0xe007f;
+const isTagChar = (cp: number): boolean => cp >= 0xe0001 && cp <= 0xe007f;
 const isVarSelectorSupp = (cp: number): boolean => cp >= 0xe0100 && cp <= 0xe01ef;
+const isPrivateUse = (cp: number): boolean =>
+  (cp >= 0xe000 && cp <= 0xf8ff) || (cp >= 0xf0000 && cp <= 0xffffd) || (cp >= 0x100000 && cp <= 0x10fffd);
 
 const isEmojiBase = (cp: number): boolean =>
   (cp >= 0x1f000 && cp <= 0x1faff) ||
@@ -211,17 +235,25 @@ export interface CleanAiWatermarksOptions {
   stripEmojiGlue?: boolean;
   /** Also strip RTL directional marks and balanced embeddings (independent of the above). */
   stripBidi?: boolean;
+  /** Map Cyrillic/fullwidth lookalikes to ASCII letters. Can alter legitimate text. */
+  aggressiveHomoglyphs?: boolean;
+  /** Apply Unicode NFKC after cleaning (fullwidth → ASCII, ligatures, …). */
+  nfkc?: boolean;
 }
 
 export interface CleanAiWatermarksResult {
   cleanedText: string;
   removedCount: number;
   replacedSpaceCount: number;
+  /** Cyrillic/fullwidth lookalikes mapped to ASCII (only when aggressiveHomoglyphs). */
+  replacedConfusableCount: number;
+  /** Characters changed by NFKC normalization (only when nfkc). */
+  nfkcChangedCount: number;
   totalModifications: number;
   details: Record<string, number>;
 }
 
-type Action = 'keep' | 'strip' | 'replace';
+type Action = 'keep' | 'strip' | 'space' | 'confusable';
 
 interface DecideContext {
   prevKept: number | null;
@@ -232,6 +264,7 @@ interface DecideContext {
   normalizeSpaces: boolean;
   stripEmojiGlue: boolean;
   stripBidi: boolean;
+  treatConfusables: boolean;
 }
 
 function decide(cp: number, ctx: DecideContext): Action {
@@ -268,14 +301,66 @@ function decide(cp: number, ctx: DecideContext): Action {
     if (MONGOLIAN_FVS.has(cp) && prevKept !== null && isMongolianLetter(prevKept)) return 'keep';
     if (KHMER_VOWELS.has(cp) && prevKept !== null && isKhmerLetter(prevKept)) return 'keep';
     if (HANGUL_FILLERS.has(cp) && prevKept !== null && isHangulJamo(prevKept)) return 'keep';
+    if (ORTHOGRAPHIC_CF.has(cp)) return 'keep';
   }
 
-  if (STRIP_CODEPOINTS.has(cp) || isTagChar(cp) || isVarSelectorSupp(cp)) return 'strip';
-  if (ctx.normalizeSpaces && SPACE_HOMOGLYPHS[cp] !== undefined) return 'replace';
+  if (STRIP_CODEPOINTS.has(cp) || isVarSelectorSupp(cp) || isTagChar(cp) || isPrivateUse(cp)) return 'strip';
+  if (ctx.normalizeSpaces && SPACE_HOMOGLYPHS[cp] !== undefined) return 'space';
+  if (ctx.treatConfusables && LATIN_CONFUSABLES[cp] !== undefined) return 'confusable';
+  if (RE_CF.test(chr(cp)) && SPACE_HOMOGLYPHS[cp] === undefined) return 'strip';
   return 'keep';
 }
 
 const hex = (cp: number): string => `U+${cp.toString(16).toUpperCase().padStart(4, '0')}`;
+
+/**
+ * Characters NFKC actually rewrote, counted the way upstream does: the input
+ * positions difflib.SequenceMatcher would report as non-equal, i.e. the input
+ * length minus the total size of its matching blocks.
+ */
+function nfkcChangedChars(before: number[], after: number[]): number {
+  const index = new Map<number, number[]>();
+  for (let j = 0; j < after.length; j++) {
+    const list = index.get(after[j]);
+    if (list) list.push(j);
+    else index.set(after[j], [j]);
+  }
+
+  const longestMatch = (alo: number, ahi: number, blo: number, bhi: number): [number, number, number] => {
+    let besti = alo;
+    let bestj = blo;
+    let bestsize = 0;
+    let j2len = new Map<number, number>();
+    for (let i = alo; i < ahi; i++) {
+      const next = new Map<number, number>();
+      for (const j of index.get(before[i]) ?? []) {
+        if (j < blo) continue;
+        if (j >= bhi) break;
+        const k = (j2len.get(j - 1) ?? 0) + 1;
+        next.set(j, k);
+        if (k > bestsize) {
+          besti = i - k + 1;
+          bestj = j - k + 1;
+          bestsize = k;
+        }
+      }
+      j2len = next;
+    }
+    return [besti, bestj, bestsize];
+  };
+
+  let matched = 0;
+  const queue: Array<[number, number, number, number]> = [[0, before.length, 0, after.length]];
+  while (queue.length) {
+    const [alo, ahi, blo, bhi] = queue.pop() as [number, number, number, number];
+    const [i, j, k] = longestMatch(alo, ahi, blo, bhi);
+    if (!k) continue;
+    matched += k;
+    if (alo < i && blo < j) queue.push([alo, i, blo, j]);
+    if (i + k < ahi && j + k < bhi) queue.push([i + k, ahi, j + k, bhi]);
+  }
+  return before.length - matched;
+}
 
 export function cleanAiWatermarks(
   text: string,
@@ -286,6 +371,8 @@ export function cleanAiWatermarks(
       cleanedText: '',
       removedCount: 0,
       replacedSpaceCount: 0,
+      replacedConfusableCount: 0,
+      nfkcChangedCount: 0,
       totalModifications: 0,
       details: {},
     };
@@ -294,6 +381,7 @@ export function cleanAiWatermarks(
   const normalizeSpaces = options.normalizeSpaces === true;
   const stripEmojiGlue = options.stripEmojiGlue === true;
   const stripBidi = options.stripBidi === true;
+  const treatConfusables = options.aggressiveHomoglyphs === true;
 
   // Iterate by code point so surrogate pairs stay intact.
   const cps = Array.from(text, (ch) => ch.codePointAt(0) as number);
@@ -302,6 +390,7 @@ export function cleanAiWatermarks(
 
   let removedCount = 0;
   let replacedSpaceCount = 0;
+  let replacedConfusableCount = 0;
   const details: Record<string, number> = {};
   const chars: string[] = [];
   let prevKept: number | null = null;
@@ -317,6 +406,7 @@ export function cleanAiWatermarks(
       normalizeSpaces,
       stripEmojiGlue,
       stripBidi,
+      treatConfusables,
     });
 
     if (action === 'strip') {
@@ -325,11 +415,13 @@ export function cleanAiWatermarks(
       continue;
     }
 
-    if (action === 'replace') {
-      replacedSpaceCount++;
-      const replacement = SPACE_HOMOGLYPHS[cp];
+    if (action === 'space' || action === 'confusable') {
+      const isSpace = action === 'space';
+      const replacement = isSpace ? SPACE_HOMOGLYPHS[cp] : LATIN_CONFUSABLES[cp];
+      if (isSpace) replacedSpaceCount++;
+      else replacedConfusableCount++;
       chars.push(replacement);
-      const key = `${hex(cp)} (Space)`;
+      const key = `${hex(cp)} (${isSpace ? 'Space' : 'Confusable'})`;
       details[key] = (details[key] || 0) + 1;
       prevKept = replacement.codePointAt(0) as number;
       continue;
@@ -339,17 +431,35 @@ export function cleanAiWatermarks(
     if (!isGlue(cp)) prevKept = cp;
   }
 
+  let cleanedText = chars.join('');
+  let nfkcChangedCount = 0;
+  if (options.nfkc === true) {
+    const normalized = cleanedText.normalize('NFKC');
+    if (normalized !== cleanedText) {
+      const before = Array.from(cleanedText, (ch) => ch.codePointAt(0) as number);
+      const after = Array.from(normalized, (ch) => ch.codePointAt(0) as number);
+      nfkcChangedCount = nfkcChangedChars(before, after) || 1;
+      details.NFKC = (details.NFKC || 0) + nfkcChangedCount;
+      cleanedText = normalized;
+    }
+  }
+
   return {
-    cleanedText: chars.join(''),
+    cleanedText,
     removedCount,
     replacedSpaceCount,
-    totalModifications: removedCount + replacedSpaceCount,
+    replacedConfusableCount,
+    nfkcChangedCount,
+    totalModifications: removedCount + replacedSpaceCount + replacedConfusableCount + nfkcChangedCount,
     details,
   };
 }
 
 /** How many characters cleanAiWatermarks() would remove or replace. */
-export function countAiWatermarks(text: string): number {
+export function countAiWatermarks(
+  text: string,
+  options: CleanAiWatermarksOptions = { normalizeSpaces: true }
+): number {
   if (!text) return 0;
-  return cleanAiWatermarks(text, { normalizeSpaces: true }).totalModifications;
+  return cleanAiWatermarks(text, options).totalModifications;
 }

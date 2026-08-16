@@ -12,6 +12,7 @@ import {
 } from './utils/markdownParser';
 import { convertToGutenbergBlocks } from './utils/gutenbergConverter';
 import { cleanAiWatermarks } from './utils/aiWatermarkCleaner';
+import type { CleanAiWatermarksOptions } from './utils/aiWatermarkCleaner';
 import type { ConverterOptions, ParsedMarkdownResult, ThemeStyle, AppLanguage } from './types';
 import { CheckCircle2 } from 'lucide-react';
 import { t } from './utils/i18n';
@@ -26,7 +27,22 @@ const DEFAULT_OPTIONS: ConverterOptions = {
   includeFrontmatterInOutput: false,
   autoCleanAiWatermarks: true,
   normalizeSpaceHomoglyphs: true,
+  replaceLatinConfusables: false,
+  nfkcNormalize: false,
+  stripEmojiGlue: false,
+  stripBidiMarks: false,
 };
+
+/** Map the app's settings onto the Layer A cleaner's options. */
+function cleanerOptions(o: ConverterOptions): CleanAiWatermarksOptions {
+  return {
+    normalizeSpaces: o.normalizeSpaceHomoglyphs,
+    aggressiveHomoglyphs: o.replaceLatinConfusables,
+    nfkc: o.nfkcNormalize,
+    stripEmojiGlue: o.stripEmojiGlue,
+    stripBidi: o.stripBidiMarks,
+  };
+}
 
 function getInitialLanguage(): AppLanguage {
   const saved = localStorage.getItem('wp_md_lang');
@@ -67,9 +83,7 @@ export function App() {
     let cleanedAiMarksCount = 0;
 
     if (options.autoCleanAiWatermarks) {
-      const cleanRes = cleanAiWatermarks(markdown, {
-        normalizeSpaces: options.normalizeSpaceHomoglyphs,
-      });
+      const cleanRes = cleanAiWatermarks(markdown, cleanerOptions(options));
       effectiveMarkdown = cleanRes.cleanedText;
       cleanedAiMarksCount = cleanRes.totalModifications;
     }
@@ -97,9 +111,7 @@ export function App() {
       const text = e.target?.result as string;
       if (typeof text === 'string') {
         if (options.autoCleanAiWatermarks) {
-          const cleanRes = cleanAiWatermarks(text, {
-            normalizeSpaces: options.normalizeSpaceHomoglyphs,
-          });
+          const cleanRes = cleanAiWatermarks(text, cleanerOptions(options));
           setMarkdown(cleanRes.cleanedText);
           if (cleanRes.totalModifications > 0) {
             showToast(
@@ -118,9 +130,7 @@ export function App() {
   };
 
   const handleManualCleanAi = () => {
-    const cleanRes = cleanAiWatermarks(markdown, {
-      normalizeSpaces: options.normalizeSpaceHomoglyphs,
-    });
+    const cleanRes = cleanAiWatermarks(markdown, cleanerOptions(options));
     setMarkdown(cleanRes.cleanedText);
     showToast(t('toast.aiCleanManual', lang, { n: cleanRes.totalModifications }));
   };

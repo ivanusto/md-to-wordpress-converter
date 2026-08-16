@@ -70,6 +70,54 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <p>{t('settings.normalizeSpacesDesc', lang)}</p>
               </div>
             </label>
+
+            <label className="checkbox-setting" style={{ marginTop: '8px' }}>
+              <input
+                type="checkbox"
+                checked={options.replaceLatinConfusables}
+                onChange={(e) => handleChange('replaceLatinConfusables', e.target.checked)}
+              />
+              <div className="checkbox-label-text">
+                <strong>{t('settings.latinConfusables', lang)}</strong>
+                <p>{t('settings.latinConfusablesDesc', lang)}</p>
+              </div>
+            </label>
+
+            <label className="checkbox-setting" style={{ marginTop: '8px' }}>
+              <input
+                type="checkbox"
+                checked={options.nfkcNormalize}
+                onChange={(e) => handleChange('nfkcNormalize', e.target.checked)}
+              />
+              <div className="checkbox-label-text">
+                <strong>{t('settings.nfkc', lang)}</strong>
+                <p>{t('settings.nfkcDesc', lang)}</p>
+              </div>
+            </label>
+
+            <label className="checkbox-setting" style={{ marginTop: '8px' }}>
+              <input
+                type="checkbox"
+                checked={options.stripEmojiGlue}
+                onChange={(e) => handleChange('stripEmojiGlue', e.target.checked)}
+              />
+              <div className="checkbox-label-text">
+                <strong>{t('settings.stripEmojiGlue', lang)}</strong>
+                <p>{t('settings.stripEmojiGlueDesc', lang)}</p>
+              </div>
+            </label>
+
+            <label className="checkbox-setting" style={{ marginTop: '8px' }}>
+              <input
+                type="checkbox"
+                checked={options.stripBidiMarks}
+                onChange={(e) => handleChange('stripBidiMarks', e.target.checked)}
+              />
+              <div className="checkbox-label-text">
+                <strong>{t('settings.stripBidi', lang)}</strong>
+                <p>{t('settings.stripBidiDesc', lang)}</p>
+              </div>
+            </label>
           </div>
 
           <div className="setting-group">
