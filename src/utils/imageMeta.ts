@@ -1,5 +1,5 @@
 /**
- * Detect and strip C2PA / AI-related metadata from PNG, JPEG, WebP, AVIF and HEIC.
+ * Detect and strip C2PA / AI-related metadata from PNG, JPEG, WebP, AVIF, HEIC and GIF.
  *
  * TypeScript port of `js/image_meta.js` in ivanusto/unmark-web, which
  * is itself a port of the stdlib parsers in `service/scripts/image_meta.py` from
@@ -12,7 +12,7 @@
  * implementation. Upstream changes still have to be pulled in by hand.
  */
 
-export type ImageFormat = 'png' | 'jpeg' | 'webp' | 'avif' | 'heic' | 'unknown';
+export type ImageFormat = 'png' | 'jpeg' | 'webp' | 'avif' | 'heic' | 'gif' | 'unknown';
 
 export interface InspectResult {
   format: ImageFormat;
@@ -80,6 +80,7 @@ export function detectFormat(u8: Uint8Array): ImageFormat {
     if (AVIF_BRANDS.some((b) => header.includes(b))) return 'avif';
     if (HEIC_BRANDS.some((b) => header.includes(b))) return 'heic';
   }
+  if (isGif(u8)) return 'gif';
   return 'unknown';
 }
 
@@ -572,6 +573,190 @@ export function stripIsobmff(
   return { data: concat(out), actions };
 }
 
+// ---------------------------------------------------------------- GIF
+const GIF_XMP_APPLICATION_ID = 'XMP DataXMP';
+// Application extensions that control rendering rather than carrying provenance;
+// dropping them would change animation looping or color.
+const GIF_CONTROL_APPLICATION_IDS = ['NETSCAPE2.0', 'ICCRGBG1012'];
+
+const isGif = (u8: Uint8Array): boolean =>
+  u8.length >= 6 && (latin1(u8.subarray(0, 6)) === 'GIF87a' || latin1(u8.subarray(0, 6)) === 'GIF89a');
+
+interface GifExtension {
+  end: number;
+  label: number;
+  payload: Uint8Array;
+}
+
+/** The extension block at `start` (0x21), or null when truncated. */
+function gifExtensionInfo(u8: Uint8Array, start: number, n: number): GifExtension | null {
+  if (start + 2 > n) return null;
+  const label = u8[start + 1];
+  let pos = start + 2;
+  const parts: Uint8Array[] = [];
+  while (pos < n) {
+    const size = u8[pos];
+    pos += 1;
+    if (size === 0) return { end: pos, label, payload: concat(parts) };
+    if (pos + size > n) return null;
+    parts.push(u8.subarray(pos, pos + size));
+    pos += size;
+  }
+  return null;
+}
+
+/** Offset just past the image block starting at `start` (0x2C), or null. */
+function gifImageEnd(u8: Uint8Array, start: number, n: number): number | null {
+  let pos = start + 1;
+  if (pos + 9 > n) return null;
+  const packed = u8[pos + 8];
+  pos += 9;
+  if (packed & 0x80) pos += 3 * (1 << ((packed & 0x07) + 1)); // local color table
+  if (pos >= n) return null;
+  pos += 1; // LZW minimum code size
+  while (pos < n) {
+    const size = u8[pos];
+    pos += 1;
+    if (size === 0) return pos;
+    if (pos + size > n) return null;
+    pos += size;
+  }
+  return null;
+}
+
+export function inspectGif(u8: Uint8Array): Omit<InspectResult, 'format'> {
+  if (!isGif(u8)) return { hasC2pa: false, hasAiMetadata: false, findings: ['not a GIF'] };
+  const findings: string[] = [];
+  let hasC2pa = false;
+  let hasAi = false;
+  const n = u8.length;
+  let pos = 6;
+  if (pos + 7 > n) return { hasC2pa: false, hasAiMetadata: false, findings: ['truncated GIF header'] };
+  const packed = u8[pos + 4];
+  pos += 7;
+  if (packed & 0x80) pos += 3 * (1 << ((packed & 0x07) + 1)); // global color table
+  while (pos < n) {
+    const block = u8[pos];
+    if (block === 0x3b) break; // trailer
+    if (block === 0x21) {
+      const info = gifExtensionInfo(u8, pos, n);
+      if (info === null) {
+        findings.push('truncated GIF extension');
+        break;
+      }
+      const { end, label, payload } = info;
+      if (label === 0xfe) {
+        findings.push('GIF comment extension present');
+        const hits = containsAny(payload, ALL_HINTS);
+        if (hits.length) {
+          hasAi = true;
+          findings.push(`GIF comment: ${hits.slice(0, 6).join(', ')}`);
+        }
+      } else if (label === 0xff) {
+        const ident = latin1(payload.subarray(0, 11));
+        if (ident === GIF_XMP_APPLICATION_ID) {
+          findings.push('GIF XMP application extension present');
+          const hits = containsAny(payload, ALL_HINTS);
+          if (hits.length) {
+            hasAi = true;
+            findings.push(`GIF XMP: ${hits.slice(0, 6).join(', ')}`);
+          }
+        } else if (['c2pa', 'jumb', 'C2PA', 'JUMB'].some((m) => ident.includes(m))) {
+          hasC2pa = true;
+          findings.push('GIF application extension (possible C2PA)');
+        }
+      }
+      pos = end;
+    } else if (block === 0x2c) {
+      const end = gifImageEnd(u8, pos, n);
+      if (end === null) {
+        findings.push('truncated GIF image block');
+        break;
+      }
+      pos = end;
+    } else {
+      pos += 1;
+    }
+  }
+  const whole = containsAny(u8, C2PA_MARKERS);
+  if (whole.length && !hasC2pa) {
+    hasC2pa = true;
+    findings.push(`byte-scan C2PA markers: ${whole.slice(0, 6).join(', ')}`);
+  }
+  if (!findings.length) findings.push('no GIF metadata extensions found');
+  return { hasC2pa, hasAiMetadata: hasAi || hasC2pa, findings };
+}
+
+export function stripGif(
+  u8: Uint8Array,
+  { stripAllMetadata = true }: { stripAllMetadata?: boolean } = {},
+): Omit<CleanResult, 'format'> {
+  if (!isGif(u8)) throw new Error('not GIF');
+  const actions: string[] = [];
+  const parts: Uint8Array[] = [u8.subarray(0, 6)];
+  const n = u8.length;
+  let pos = 6;
+  if (pos + 7 > n) throw new Error('truncated GIF header');
+  const packed = u8[pos + 4];
+  parts.push(u8.subarray(pos, pos + 7));
+  pos += 7;
+  if (packed & 0x80) {
+    const gctSize = 3 * (1 << ((packed & 0x07) + 1));
+    parts.push(u8.subarray(pos, pos + gctSize));
+    pos += gctSize;
+  }
+  while (pos < n) {
+    const block = u8[pos];
+    if (block === 0x3b) {
+      parts.push(u8.subarray(pos)); // trailer
+      break;
+    }
+    if (block === 0x21) {
+      const info = gifExtensionInfo(u8, pos, n);
+      if (info === null) {
+        parts.push(u8.subarray(pos));
+        break;
+      }
+      const { end, label, payload } = info;
+      let drop = false;
+      let name = 'extension';
+      if (label === 0xfe) {
+        name = 'comment';
+        drop = stripAllMetadata || containsAny(payload, ALL_HINTS).length > 0;
+      } else if (label === 0xff) {
+        const ident = latin1(payload.subarray(0, 11));
+        const markerHit = containsAny(payload, ALL_HINTS).length > 0;
+        if (ident === GIF_XMP_APPLICATION_ID) {
+          name = 'XMP application';
+          drop = stripAllMetadata || markerHit;
+        } else if (GIF_CONTROL_APPLICATION_IDS.includes(ident)) {
+          name = 'control application';
+          drop = markerHit; // keep looping/ICC unless it carries markers
+        } else {
+          name = 'application';
+          drop = stripAllMetadata || markerHit;
+        }
+      }
+      if (drop) actions.push(`drop GIF ${name} extension`);
+      else parts.push(u8.subarray(pos, end));
+      pos = end;
+    } else if (block === 0x2c) {
+      const end = gifImageEnd(u8, pos, n);
+      if (end === null) {
+        parts.push(u8.subarray(pos));
+        break;
+      }
+      parts.push(u8.subarray(pos, end));
+      pos = end;
+    } else {
+      parts.push(u8.subarray(pos, pos + 1));
+      pos += 1;
+    }
+  }
+  if (!actions.length) actions.push('no GIF metadata blocks removed (already clean or none matched)');
+  return { data: concat(parts), actions };
+}
+
 // ---------------------------------------------------------------- unified
 export function inspect(u8: Uint8Array): InspectResult {
   const format = detectFormat(u8);
@@ -580,6 +765,7 @@ export function inspect(u8: Uint8Array): InspectResult {
     : format === 'jpeg' ? inspectJpeg(u8)
     : format === 'webp' ? inspectWebp(u8)
     : format === 'avif' || format === 'heic' ? inspectIsobmff(u8, format)
+    : format === 'gif' ? inspectGif(u8)
     : { hasC2pa: false, hasAiMetadata: false, findings: ['unsupported image format'] };
   return { format, ...r };
 }
@@ -591,7 +777,8 @@ export function clean(u8: Uint8Array, { stripAllMetadata = true }: { stripAllMet
   if (format === 'jpeg') return { format, ...stripJpeg(u8, { stripAllApp: stripAllMetadata }) };
   if (format === 'webp') return { format, ...stripWebp(u8, { stripAllMetadata }) };
   if (format === 'avif' || format === 'heic') return { format, ...stripIsobmff(u8, format, { stripAllMetadata }) };
-  throw new Error('unsupported image format (expected PNG, JPEG, WebP, AVIF or HEIC)');
+  if (format === 'gif') return { format, ...stripGif(u8, { stripAllMetadata }) };
+  throw new Error('unsupported image format (expected PNG, JPEG, WebP, AVIF, HEIC or GIF)');
 }
 
-export const SUPPORTED_IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.avif', '.heic', '.heif'];
+export const SUPPORTED_IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.avif', '.heic', '.heif', '.gif'];

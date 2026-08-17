@@ -25,7 +25,7 @@ An open-source, privacy-first, 100% client-side web application built with React
 - 💡 **GitHub-Flavored Callouts (提示框支援)**: Fully converts `> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, and `> [!IMPORTANT]` blockquotes into beautifully styled Gutenberg callouts.
 - 🌐 **Full Multilingual Support (繁體中文 / English i18n)**: Seamless language switcher with browser locale detection and persistence.
 - 🎨 **4 Typographic Themes & 5 Code Themes**: WordPress Gutenberg, Editorial Serif, Tech Dark, Corporate Slate with VS Code, GitHub Light, Dracula, Monokai Pro, and Atom One Dark syntax highlighting.
-- 🖼️ **Image Metadata & C2PA Stripper (圖片中繼資料清除)**: Drop PNG, JPEG, WebP, AVIF or HEIC files into the image panel to remove C2PA/Content Credentials, EXIF, XMP and AI provenance blocks before uploading them to WordPress, then download the cleaned file. Byte-level container surgery — pixels are never re-encoded, so quality is untouched. Ported from [unmark-web](https://github.com/ivanusto/unmark-web) and pinned to it by golden tests.
+- 🖼️ **Image Metadata & C2PA Stripper (圖片中繼資料清除)**: Drop PNG, JPEG, WebP, AVIF, HEIC or GIF files into the image panel to remove C2PA/Content Credentials, EXIF, XMP and AI provenance blocks before uploading them to WordPress, then download the cleaned file. Byte-level container surgery — pixels are never re-encoded, so quality is untouched. Ported from [unmark-web](https://github.com/ivanusto/unmark-web) and pinned to it by golden tests.
 - 🔒 **100% Privacy-First (純前端本地運算)**: Everything is processed in browser memory with zero server uploads or tracking.
 
 ---
