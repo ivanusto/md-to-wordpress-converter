@@ -1,20 +1,20 @@
 {
   "note": "Files this project's cleaners were ported from. scripts/check-upstream.mjs compares the live content against these hashes; when one moves, re-port the mirror files listed under `mirrors` and update `sha256` in the same commit.",
-  "followUp": "`tests/golden/imageMeta.json` holds values generated from `watermarks-remover-web`. If that source changed, regenerate the golden values as part of the re-port — otherwise the tests keep asserting the old behaviour and the drift ships anyway.",
+  "followUp": "`tests/golden/imageMeta.json` holds values generated from `unmark-web`. If that source changed, regenerate the golden values as part of the re-port — otherwise the tests keep asserting the old behaviour and the drift ships anyway.",
   "sources": [
     {
-      "id": "watermarks-remover-web/js/layer_a.js",
-      "url": "https://raw.githubusercontent.com/ivanusto/watermarks-remover-web/main/js/layer_a.js",
-      "history": "https://github.com/ivanusto/watermarks-remover-web/commits/main/js/layer_a.js",
+      "id": "unmark-web/js/layer_a.js",
+      "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/layer_a.js",
+      "history": "https://github.com/ivanusto/unmark-web/commits/main/js/layer_a.js",
       "sha256": "2303d6242e2af736d98f7638f38407acffe330a38545644e008663bfe010d88f",
       "mirrors": [
         "src/utils/aiWatermarkCleaner.ts"
       ]
     },
     {
-      "id": "watermarks-remover-web/js/image_meta.js",
-      "url": "https://raw.githubusercontent.com/ivanusto/watermarks-remover-web/main/js/image_meta.js",
-      "history": "https://github.com/ivanusto/watermarks-remover-web/commits/main/js/image_meta.js",
+      "id": "unmark-web/js/image_meta.js",
+      "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/image_meta.js",
+      "history": "https://github.com/ivanusto/unmark-web/commits/main/js/image_meta.js",
       "sha256": "d8616ba4e106add321d78e378c49490a3636d0a404f5a79b898c39fad53c983a",
       "mirrors": [
         "src/utils/imageMeta.ts",
@@ -29,7 +29,7 @@
       "mirrors": [
         "src/utils/aiWatermarkCleaner.ts"
       ],
-      "comment": "Root source. Changes here land in watermarks-remover-web first; this entry catches the window before that happens."
+      "comment": "Root source. Changes here land in unmark-web first; this entry catches the window before that happens."
     },
     {
       "id": "watermarks-remover/service/scripts/image_meta.py",

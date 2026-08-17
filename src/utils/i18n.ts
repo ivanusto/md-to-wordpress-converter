@@ -119,7 +119,7 @@ export const I18N_STRINGS = {
     'meta.copied': '已複製',
 
     // Footer
-    'footer.linkWm': '🛡️ AI 浮水印清除器',
+    'footer.linkWm': '🛡️ Unmark 浮水印清除器',
     'footer.linkRatio': '📐 比例計算與裁切器',
     'footer.linkRepo': '🐙 GitHub 專案',
     'footer.linkBlog': '🌐 優格網',
@@ -254,7 +254,7 @@ export const I18N_STRINGS = {
     'meta.copied': 'Copied',
 
     // Footer
-    'footer.linkWm': '🛡️ AI Watermarks Remover',
+    'footer.linkWm': '🛡️ Unmark',
     'footer.linkRatio': '📐 Aspect Ratio & Crop Pro',
     'footer.linkRepo': '🐙 GitHub Repo',
     'footer.linkBlog': '🌐 yblog.org',

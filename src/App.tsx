@@ -217,7 +217,7 @@ export function App() {
 
       <footer className="app-footer">
         <div className="footer-links">
-          <a href="https://ivanusto.github.io/watermarks-remover-web/" target="_blank" rel="noopener noreferrer">
+          <a href="https://ivanusto.github.io/unmark-web/" target="_blank" rel="noopener noreferrer">
             {t('footer.linkWm', lang)}
           </a>
           <span className="footer-divider">•</span>

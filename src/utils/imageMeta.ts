@@ -1,7 +1,7 @@
 /**
  * Detect and strip C2PA / AI-related metadata from PNG, JPEG, WebP, AVIF and HEIC.
  *
- * TypeScript port of `js/image_meta.js` in ivanusto/watermarks-remover-web, which
+ * TypeScript port of `js/image_meta.js` in ivanusto/unmark-web, which
  * is itself a port of the stdlib parsers in `service/scripts/image_meta.py` from
  * guillaumemeyer/watermarks-remover (MIT): same chunk/segment/box policy, same
  * marker heuristics, same VP8X flag fix-up. Pixels are never touched — this is

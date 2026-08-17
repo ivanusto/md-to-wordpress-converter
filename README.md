@@ -25,7 +25,7 @@ An open-source, privacy-first, 100% client-side web application built with React
 - 💡 **GitHub-Flavored Callouts (提示框支援)**: Fully converts `> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, and `> [!IMPORTANT]` blockquotes into beautifully styled Gutenberg callouts.
 - 🌐 **Full Multilingual Support (繁體中文 / English i18n)**: Seamless language switcher with browser locale detection and persistence.
 - 🎨 **4 Typographic Themes & 5 Code Themes**: WordPress Gutenberg, Editorial Serif, Tech Dark, Corporate Slate with VS Code, GitHub Light, Dracula, Monokai Pro, and Atom One Dark syntax highlighting.
-- 🖼️ **Image Metadata & C2PA Stripper (圖片中繼資料清除)**: Drop PNG, JPEG, WebP, AVIF or HEIC files into the image panel to remove C2PA/Content Credentials, EXIF, XMP and AI provenance blocks before uploading them to WordPress, then download the cleaned file. Byte-level container surgery — pixels are never re-encoded, so quality is untouched. Ported from [watermarks-remover-web](https://github.com/ivanusto/watermarks-remover-web) and pinned to it by golden tests.
+- 🖼️ **Image Metadata & C2PA Stripper (圖片中繼資料清除)**: Drop PNG, JPEG, WebP, AVIF or HEIC files into the image panel to remove C2PA/Content Credentials, EXIF, XMP and AI provenance blocks before uploading them to WordPress, then download the cleaned file. Byte-level container surgery — pixels are never re-encoded, so quality is untouched. Ported from [unmark-web](https://github.com/ivanusto/unmark-web) and pinned to it by golden tests.
 - 🔒 **100% Privacy-First (純前端本地運算)**: Everything is processed in browser memory with zero server uploads or tracking.
 
 ---
@@ -41,7 +41,7 @@ An open-source, privacy-first, 100% client-side web application built with React
 ## 🛠️ Free Sister Web Tools / 更多免費實用線上工具
 
 Check out these other free, privacy-first web tools / 歡迎體驗同系列純前端線上工具：
-- 🛡️ **[AI Watermarks & Provenance Remover](https://ivanusto.github.io/watermarks-remover-web/)** — Strip multi-vendor AI provenance marks (ChatGPT, Claude, Gemini invisible Unicode, C2PA, EXIF metadata).
+- 🛡️ **[AI Watermarks & Provenance Remover](https://ivanusto.github.io/unmark-web/)** — Strip multi-vendor AI provenance marks (ChatGPT, Claude, Gemini invisible Unicode, C2PA, EXIF metadata).
 - 📐 **[Aspect Ratio & Crop Pro](https://ivanusto.github.io/image-aspect-ratio-calculator/)** — Smart image/video aspect ratio calculator, preset matcher, and real-time center-cropper.
 
 ---
@@ -75,7 +75,7 @@ npm run build
 
 ## 🔄 Keeping the ported cleaners in sync
 
-`src/utils/aiWatermarkCleaner.ts` and `src/utils/imageMeta.ts` are hand-written ports of code that lives in [watermarks-remover-web](https://github.com/ivanusto/watermarks-remover-web) and, further upstream, in [watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover). Nothing in this repository can tell when that code changes, so `.github/workflows/upstream-check.yml` hashes those four files daily and opens an issue when one moves; it closes the issue again once the hashes match. The recorded hashes live in `scripts/upstream-sources.json` and should be updated in the same commit that re-ports the change.
+`src/utils/aiWatermarkCleaner.ts` and `src/utils/imageMeta.ts` are hand-written ports of code that lives in [unmark-web](https://github.com/ivanusto/unmark-web) and, further upstream, in [watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover). Nothing in this repository can tell when that code changes, so `.github/workflows/upstream-check.yml` hashes those four files daily and opens an issue when one moves; it closes the issue again once the hashes match. The recorded hashes live in `scripts/upstream-sources.json` and should be updated in the same commit that re-ports the change.
 
 ---
 

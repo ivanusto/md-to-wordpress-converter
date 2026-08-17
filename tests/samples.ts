@@ -1,6 +1,6 @@
 /**
  * Synthetic images and text carrying the invisible-marker cases the cleaners have
- * to handle. These mirror the parity fixtures in ivanusto/watermarks-remover-web
+ * to handle. These mirror the parity fixtures in ivanusto/unmark-web
  * (tests/test_image_meta_parity.py and tests/test_layer_a_parity.py), so the
  * golden files here pin this project against that verified reference.
  */
