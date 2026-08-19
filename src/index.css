@@ -1254,18 +1254,7 @@ body {
   .brand-subtitle { display: none; }
 }
 
-@media (max-width: 1004px) {
-  .header-external-links .btn-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  .header-external-links .btn {
-    padding-left: 0.55rem;
-    padding-right: 0.55rem;
-    gap: 0;
-  }
-}
+/* The chain stops here. The language button's label is "🌐 EN" — 35px, and it
+   reports which language is active rather than naming the control, so hiding it
+   costs state for almost no width. Below ~1040px the bar wraps to a second row
+   instead, which it can now do without clipping. */
