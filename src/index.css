@@ -83,16 +83,39 @@ body {
 }
 
 /* Header Component */
+/* min-height, not height: a fixed 60px clipped the brand subtitle and the
+   controls whenever they wrapped, spilling them over the row below. */
 .app-header {
-  height: 60px;
+  min-height: 60px;
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 1.25rem;
   z-index: 20;
-  shrink: 0;
+  flex-shrink: 0;   /* was `shrink: 0`, which is not a property and did nothing */
+}
+
+/* Keeps the accessible name of a control whose label is not painted. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.btn-icon-only {
+  padding-left: 0.55rem;
+  padding-right: 0.55rem;
+  gap: 0;
 }
 
 .header-brand {
@@ -120,6 +143,7 @@ body {
 }
 
 .brand-title {
+  white-space: nowrap;
   font-family: var(--font-heading);
   font-size: 1.05rem;
   font-weight: 700;
@@ -148,7 +172,9 @@ body {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem 1rem;
 }
 
 .header-external-links {
@@ -1189,4 +1215,57 @@ body {
   .metadata-grid { grid-template-columns: 1fr; }
   .metadata-card.full-width { grid-column: span 1; }
   .image-card-main { grid-template-columns: 1fr; }
+}
+
+/* ---- header: shed label text before anything can overflow ----
+   Each breakpoint is the width at which the previous state stops fitting on one
+   row, measured rather than guessed: full labels need 1440px, and each step
+   frees roughly what its text occupied (theme label 56px, action labels 212px,
+   brand subtitle 168px). Below ~1000px the bar wraps to two rows, which is
+   fine — what it must never do is clip or push the page sideways. */
+@media (max-width: 1440px) {
+  .theme-selector-wrapper .control-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1384px) {
+  .action-buttons-group .btn-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .action-buttons-group .btn {
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+    gap: 0;
+  }
+}
+
+@media (max-width: 1172px) {
+  .brand-subtitle { display: none; }
+}
+
+@media (max-width: 1004px) {
+  .header-external-links .btn-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .header-external-links .btn {
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+    gap: 0;
+  }
 }
