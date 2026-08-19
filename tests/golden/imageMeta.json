@@ -104,6 +104,384 @@
       }
     }
   },
+  "png_gen_software": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG tEXt: AI generator (Software=ChatGPT)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      }
+    }
+  },
+  "png_gen_creator": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG tEXt: AI generator (Creator=DALL-E)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      }
+    }
+  },
+  "png_gen_parameters": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG tEXt: AI generator (parameters=SDXL)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      }
+    }
+  },
+  "png_gen_parameters_plain": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      },
+      "false": {
+        "sha": "e5b45c512cf1ba2a",
+        "length": 144,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "png_gen_lowercase": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG tEXt: AI generator (software=ChatGPT)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      }
+    }
+  },
+  "png_gen_free_text": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      },
+      "false": {
+        "sha": "19bfa8e379bc6ea6",
+        "length": 126,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "png_gen_wrong_key": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk tEXt"
+        ]
+      },
+      "false": {
+        "sha": "cfcfa336b686cf23",
+        "length": 106,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "png_gen_ztxt": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG zTXt: AI generator (Software=ChatGPT)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk zTXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk zTXt"
+        ]
+      }
+    }
+  },
+  "png_gen_itxt": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG iTXt: AI generator (Software=ChatGPT)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      }
+    }
+  },
+  "png_gen_itxt_compressed": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG iTXt: AI generator (Software=Midjourney)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      }
+    }
+  },
+  "png_ztxt_flat_hint": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG zTXt: Generated by"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk zTXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk zTXt"
+        ]
+      }
+    }
+  },
+  "png_itxt_flat_hint": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG iTXt: Generated by"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      },
+      "false": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      }
+    }
+  },
+  "png_itxt_utf8": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      },
+      "false": {
+        "sha": "9ade96c811e507cc",
+        "length": 125,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "png_ztxt_corrupt": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk zTXt"
+        ]
+      },
+      "false": {
+        "sha": "39e8c30271b52713",
+        "length": 109,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "png_itxt_truncated": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "4ff6ab670a58c142",
+        "length": 70,
+        "actions": [
+          "drop chunk iTXt"
+        ]
+      },
+      "false": {
+        "sha": "38cee7fd6636f22a",
+        "length": 93,
+        "actions": [
+          "no PNG metadata chunks removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
   "jpeg_clean": {
     "format": "jpeg",
     "inspect": {

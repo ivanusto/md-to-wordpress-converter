@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:upstream": "node scripts/check-upstream.mjs"
+    "check:upstream": "node scripts/check-upstream.mjs",
+    "regen:golden": "node --experimental-strip-types scripts/regen-golden.mjs"
   },
   "dependencies": {
     "highlight.js": "^11.11.1",
