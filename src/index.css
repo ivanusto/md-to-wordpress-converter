@@ -491,25 +491,44 @@ body {
   overflow: hidden;
 }
 
+/* min-height, not height — same trap the app header had: a fixed height turns
+   any wrapping into clipping. This row lives in a half-width grid column, so it
+   runs out of space long before the window does. */
 .preview-toolbar {
-  height: 48px;
+  min-height: 48px;
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  padding: 0.25rem 1rem;
 }
 
+/* A tab strip must never be crushed: the labels were collapsing to one
+   character per line, turning "視覺預覽 & 直接貼上" into a 56px-wide, 157px-tall
+   column. Let the strip scroll instead, and keep each tab at its natural size. */
 .view-mode-tabs {
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  flex: 0 1 auto;   /* shrink when cramped, but never grow — growing pushed the
+                       copy button onto a second row even at 1600px */
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.view-mode-tabs::-webkit-scrollbar {
+  height: 4px;
 }
 
 .tab-btn {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
   gap: 0.35rem;
   font-size: 0.775rem;
   font-family: var(--font-sans);
@@ -550,6 +569,7 @@ body {
 .quick-copy-bar {
   display: flex;
   align-items: center;
+  flex-shrink: 0;   /* the primary action keeps its full label */
 }
 
 .preview-viewport {
