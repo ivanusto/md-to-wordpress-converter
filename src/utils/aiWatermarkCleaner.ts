@@ -1,18 +1,20 @@
 /**
  * AI Invisible Watermark & Provenance Cleaner (Layer A)
  * Strips zero-width chars, invisible unicode markers, bidi overrides, tag
- * characters, variation selectors, any other format (Cf) character, and
- * homoglyphs used by LLMs (ChatGPT, Claude, Gemini, etc.); private-use
- * characters are opt-in.
+ * characters, variation selectors, Unicode noncharacters, reserved
+ * default-ignorables, any other format (Cf) character, and homoglyphs used by
+ * LLMs (ChatGPT, Claude, Gemini, etc.); private-use characters are opt-in.
  *
  * Full port of the decision procedure in `text_unicode.py` from
  * guillaumemeyer/watermarks-remover (MIT), including its "preserve multilingual
  * Unicode" pass: characters that are load-bearing in real text — emoji ZWJ/VS
  * sequences, ZWNJ/ZWJ inside Arabic, Indic, Khmer or Mongolian words, complete
  * flag tag sequences, CJK and Mongolian variation sequences, orthographic
- * Arabic/Syriac format marks, RTL directional marks and balanced LRE/RLE…PDF
- * pairs — are kept, while the same characters used as stray carriers are still
- * removed. `stripEmojiGlue` and `stripBidi` turn those exemptions off.
+ * Arabic/Syriac format marks, RTL directional marks, balanced LRE/RLE…PDF
+ * pairs, and layout format controls sitting next to their own script (Egyptian
+ * hieroglyph quadrat, Duployan shorthand, musical beaming) — are kept, while
+ * the same characters used as stray carriers are still removed.
+ * `stripEmojiGlue` and `stripBidi` turn those exemptions off.
  *
  * One deliberate divergence from upstream: private-use characters are kept
  * unless `stripPrivateUse` is set, because icon fonts live there and losing a
@@ -32,6 +34,7 @@ export const STRIP_CODEPOINTS = new Set<number>([
   0x180c,
   0x180d,
   0x180e, // Mongolian vowel separator
+  0x180f, // Mongolian free variation selector-4 (assigned in Unicode 14)
   0x200b, // zero width space (ZWSP)
   0x200c, // zero width non-joiner (ZWNJ)
   0x200d, // zero width joiner (ZWJ)
@@ -74,6 +77,8 @@ export const STRIP_CODEPOINTS = new Set<number>([
   0xfe0d,
   0xfe0e,
   0xfe0f,
+  0x3164, // Hangul filler (blank compatibility jamo)
+  0xffa0, // halfwidth Hangul filler
   0xfff9, // Interlinear annotation anchor
   0xfffa, // Interlinear annotation separator
   0xfffb, // Interlinear annotation terminator
@@ -123,9 +128,22 @@ const ORTHOGRAPHIC_CF = new Set<number>([
 const PRESERVABLE_BIDI = new Set<number>([0x061c, 0x200e, 0x200f, 0x2066, 0x2067, 0x2068, 0x2069]);
 const EMOJI_GLUE = new Set<number>([0x200d, 0xfe0e, 0xfe0f]);
 const SCRIPT_JOINERS = new Set<number>([0x200c, 0x200d]);
-const MONGOLIAN_FVS = new Set<number>([0x180b, 0x180c, 0x180d]);
+const MONGOLIAN_FVS = new Set<number>([0x180b, 0x180c, 0x180d, 0x180f]);
 const KHMER_VOWELS = new Set<number>([0x17b4, 0x17b5]);
-const HANGUL_FILLERS = new Set<number>([0x115f, 0x1160]);
+const HANGUL_FILLERS = new Set<number>([0x115f, 0x1160, 0x3164, 0xffa0]);
+
+// Egyptian hieroglyph quadrat controls, Duployan shorthand overlap/step controls
+// and musical beam/tie/slur/phrase controls are Cf, but they visibly govern how
+// their own script renders. Next to that script they are document body, not
+// carriers; floating between unrelated text they stay strip-class. Each context
+// range covers the script block and the controls themselves, so a run of
+// controls survives whole. Tuples are [controlStart, controlEnd, scriptStart,
+// scriptEnd), all half-open.
+const LAYOUT_CF_CONTROLS: Array<[number, number, number, number]> = [
+  [0x13430, 0x13440, 0x13000, 0x14400], // Egyptian hieroglyphs
+  [0x1bca0, 0x1bca4, 0x1bc00, 0x1bca4], // Duployan shorthand
+  [0x1d173, 0x1d17b, 0x1d100, 0x1d200], // musical symbols
+];
 
 // Broad script groups where ZWNJ/ZWJ can be orthographic rather than a carrier.
 const JOINING_SCRIPTS: Array<[number, number, string]> = [
@@ -145,6 +163,39 @@ const isTagChar = (cp: number): boolean => cp >= 0xe0001 && cp <= 0xe007f;
 const isVarSelectorSupp = (cp: number): boolean => cp >= 0xe0100 && cp <= 0xe01ef;
 const isPrivateUse = (cp: number): boolean =>
   (cp >= 0xe000 && cp <= 0xf8ff) || (cp >= 0xf0000 && cp <= 0xffffd) || (cp >= 0x100000 && cp <= 0x10fffd);
+
+// The 66 Unicode noncharacters: U+FDD0..U+FDEF plus U+nFFFE/U+nFFFF at the end
+// of every plane. Permanently reserved for internal use and prohibited in
+// interchange text (TUS 23.7), so any occurrence in a post is contraband. They
+// render as nothing or tofu, survive normalization, and can never be assigned,
+// so stripping them carries no future-Unicode risk.
+const isNoncharacter = (cp: number): boolean =>
+  (cp >= 0xfdd0 && cp <= 0xfdef) || (cp & 0xfffe) === 0xfffe;
+
+// Unassigned code points with Other_Default_Ignorable_Code_Point=Yes: reserved
+// for future default-ignorable characters, so conformant renderers already draw
+// them as nothing and normalization preserves them. They have no legitimate use
+// in interchange (conformance clause C7), which makes them ideal covert
+// carriers. Written out as explicit ranges and never as a "category Cn" test:
+// the Unicode version behind \p{Cn} moves with the engine, so a category rule
+// would delete freshly assigned real characters. Re-check on Unicode version
+// bumps, exactly as happened when U+180F became Mongolian FVS4 in Unicode 14.
+const RESERVED_IGNORABLE_CPS = new Set<number>([0x2065, 0xe0000]);
+const RESERVED_IGNORABLE_RANGES: Array<[number, number]> = [
+  [0xfff0, 0xfff9],
+  [0xe0080, 0xe0100],
+  [0xe01f0, 0xe1000],
+];
+const isReservedIgnorable = (cp: number): boolean =>
+  RESERVED_IGNORABLE_CPS.has(cp) || RESERVED_IGNORABLE_RANGES.some(([lo, hi]) => cp >= lo && cp < hi);
+
+/** [scriptStart, scriptEnd) for a visible-layout Cf control, else null. */
+function layoutCfScript(cp: number): [number, number] | null {
+  for (const [cStart, cEnd, sStart, sEnd] of LAYOUT_CF_CONTROLS) {
+    if (cp >= cStart && cp < cEnd) return [sStart, sEnd];
+  }
+  return null;
+}
 
 const isEmojiBase = (cp: number): boolean =>
   (cp >= 0x1f000 && cp <= 0x1faff) ||
@@ -171,8 +222,15 @@ const isCjkIdeograph = (cp: number): boolean =>
 const isMongolianBase = (cp: number): boolean => cp >= 0x1800 && cp <= 0x18af;
 const isMongolianLetter = (cp: number): boolean => isMongolianBase(cp) && RE_L.test(chr(cp));
 const isKhmerLetter = (cp: number): boolean => cp >= 0x1780 && cp <= 0x17ff && RE_L.test(chr(cp));
+// Conjoining jamo plus the compatibility and halfwidth presentation forms, so
+// each filler can follow letters of its own form: U+115F/U+1160 after conjoining
+// jamo, U+3164 after compatibility jamo, U+FFA0 after halfwidth.
 const isHangulJamo = (cp: number): boolean =>
-  (cp >= 0x1100 && cp <= 0x11ff) || (cp >= 0xa960 && cp <= 0xa97c) || (cp >= 0xd7b0 && cp <= 0xd7c6);
+  (cp >= 0x1100 && cp <= 0x11ff) ||
+  (cp >= 0xa960 && cp <= 0xa97c) ||
+  (cp >= 0xd7b0 && cp <= 0xd7c6) ||
+  (cp >= 0x3131 && cp <= 0x318e) ||
+  (cp >= 0xffa1 && cp <= 0xffdc);
 
 function joiningScript(cp: number): string | null {
   for (const [start, end, name] of JOINING_SCRIPTS) {
@@ -186,7 +244,6 @@ const isGlue = (cp: number): boolean =>
   EMOJI_GLUE.has(cp) ||
   isVarSelectorSupp(cp) ||
   (cp >= 0xfe00 && cp <= 0xfe0f) ||
-  (cp >= 0x180b && cp <= 0x180d) ||
   SCRIPT_JOINERS.has(cp) ||
   isTagChar(cp) ||
   MONGOLIAN_FVS.has(cp) ||
@@ -287,7 +344,7 @@ function decide(cp: number, ctx: DecideContext): Action {
 
   if (prevInput !== null && !stripEmojiGlue) {
     if (isVarSelectorSupp(cp) && isCjkIdeograph(prevInput)) return 'keep';
-    if (cp >= 0x180b && cp <= 0x180d && isMongolianBase(prevInput)) return 'keep';
+    if (MONGOLIAN_FVS.has(cp) && isMongolianBase(prevInput)) return 'keep';
     if (cp >= 0xfe00 && cp <= 0xfe0d && isCjkIdeograph(prevInput)) return 'keep';
   }
 
@@ -314,9 +371,15 @@ function decide(cp: number, ctx: DecideContext): Action {
     if (KHMER_VOWELS.has(cp) && prevKept !== null && isKhmerLetter(prevKept)) return 'keep';
     if (HANGUL_FILLERS.has(cp) && prevKept !== null && isHangulJamo(prevKept)) return 'keep';
     if (ORTHOGRAPHIC_CF.has(cp)) return 'keep';
+    const script = layoutCfScript(cp);
+    if (script !== null) {
+      const inScript = (n: number | null): boolean => n !== null && n >= script[0] && n < script[1];
+      if (inScript(prevInput) || inScript(nextInput)) return 'keep';
+    }
   }
 
   if (STRIP_CODEPOINTS.has(cp) || isVarSelectorSupp(cp) || isTagChar(cp)) return 'strip';
+  if (isNoncharacter(cp) || isReservedIgnorable(cp)) return 'strip';
   if (ctx.stripPrivateUse && isPrivateUse(cp)) return 'strip';
   if (ctx.normalizeSpaces && SPACE_HOMOGLYPHS[cp] !== undefined) return 'space';
   if (ctx.treatConfusables && LATIN_CONFUSABLES[cp] !== undefined) return 'confusable';
