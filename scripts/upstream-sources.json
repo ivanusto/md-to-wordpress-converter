@@ -1,21 +1,22 @@
 {
   "note": "Files this project's cleaners were ported from. scripts/check-upstream.mjs compares the live content against these hashes; when one moves, re-port the mirror files listed under `mirrors` and update `sha256` in the same commit.",
-  "followUp": "`tests/golden/imageMeta.json` holds values generated from `unmark-web`, never from this project's own TypeScript \u2014 goldens produced by the code under test assert nothing. If that source changed, regenerate as part of the re-port with `npm run regen:golden` (needs a local unmark-web checkout; see UNMARK_WEB_DIR in scripts/regen-golden.mjs), otherwise the tests keep asserting the old behaviour and the drift ships anyway.",
+  "followUp": "tests/golden/imageMeta.json and tests/golden/layerA.json hold values generated from `unmark-web`, never from this project's own TypeScript: goldens produced by the code under test assert nothing. If either unmark-web source changed, regenerate as part of the re-port with `npm run regen:golden` (needs a local unmark-web checkout; see UNMARK_WEB_DIR in scripts/regen-golden.mjs), otherwise the tests keep asserting the old behaviour and the drift ships anyway.",
   "sources": [
     {
       "id": "unmark-web/js/layer_a.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/layer_a.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/layer_a.js",
-      "sha256": "2303d6242e2af736d98f7638f38407acffe330a38545644e008663bfe010d88f",
+      "sha256": "530f5ebd866fc7445a2499bd7dfc8a7c55f66ed59e18980363bac41705a617c0",
       "mirrors": [
-        "src/utils/aiWatermarkCleaner.ts"
+        "src/utils/aiWatermarkCleaner.ts",
+        "tests/golden/layerA.json"
       ]
     },
     {
       "id": "unmark-web/js/image_meta.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/image_meta.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/image_meta.js",
-      "sha256": "176572af32bc72bc25729aee8a75f205a24f7b27c612ddee432ff2a3393bc288",
+      "sha256": "55fc29798e786879fd82430af32b57ce43a218821b650367410cbc2fdf5e885a",
       "mirrors": [
         "src/utils/imageMeta.ts",
         "tests/golden/imageMeta.json"
@@ -26,7 +27,7 @@
       "id": "watermarks-remover/service/scripts/text_unicode.py",
       "url": "https://raw.githubusercontent.com/guillaumemeyer/watermarks-remover/main/service/scripts/text_unicode.py",
       "history": "https://github.com/guillaumemeyer/watermarks-remover/commits/main/service/scripts/text_unicode.py",
-      "sha256": "cd21c5700184a6bb4a43089f546531a2692bf140413954ea9b93f4a67f1f3a5e",
+      "sha256": "ab0197b06263ad83a489032be69103e9a8725c72ddc3cf002a260c87b02647ac",
       "mirrors": [
         "src/utils/aiWatermarkCleaner.ts"
       ],
@@ -36,11 +37,11 @@
       "id": "watermarks-remover/service/scripts/image_meta.py",
       "url": "https://raw.githubusercontent.com/guillaumemeyer/watermarks-remover/main/service/scripts/image_meta.py",
       "history": "https://github.com/guillaumemeyer/watermarks-remover/commits/main/service/scripts/image_meta.py",
-      "sha256": "422dbbea5eff172b78a6f38ade753d11857d62ff4811b97084000062c5622e4a",
+      "sha256": "78e5a67db243a4eac2a97b97cea036faae448bdaa2d77c59182af2c972657794",
       "mirrors": [
         "src/utils/imageMeta.ts"
       ],
-      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here \u2014 it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js."
+      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here \u2014 it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Also partial in a second way since watermarks-remover#156: that change hardened the error handling around the external c2patool subprocess, which has no counterpart in a browser or in this converter."
     }
   ]
 }

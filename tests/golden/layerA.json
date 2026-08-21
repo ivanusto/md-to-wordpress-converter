@@ -97,6 +97,55 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "default#14": {
+    "cleaned": "mongolian fvs4 ᠠ᠏ ok, stray ",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#15": {
+    "cleaned": "hangul filler ㄱㅤ ok, stray ; halfwidth ﾡﾠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#18": {
+    "cleaned": "egyptian 𓀀𓐰𓀁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#19": {
+    "cleaned": "duployan 𛰀𛲠𛰁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "default#20": {
+    "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "nfkc#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -191,6 +240,55 @@
   "nfkc#13": {
     "cleaned": "mixed 😀️‍💩 end 🏴 stray",
     "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#14": {
+    "cleaned": "mongolian fvs4 ᠠ᠏ ok, stray ",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#15": {
+    "cleaned": "hangul filler ᄀᅠ ok, stray ; halfwidth ᄀᅠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 4
+  },
+  "nfkc#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#18": {
+    "cleaned": "egyptian 𓀀𓐰𓀁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#19": {
+    "cleaned": "duployan 𛰀𛲠𛰁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "nfkc#20": {
+    "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
     "replacedSpaceCount": 0,
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
@@ -293,6 +391,55 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "aggressive#14": {
+    "cleaned": "mongolian fvs4 ᠠ᠏ ok, stray ",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#15": {
+    "cleaned": "hangul filler ㄱㅤ ok, stray ; halfwidth ﾡﾠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#18": {
+    "cleaned": "egyptian 𓀀𓐰𓀁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#19": {
+    "cleaned": "duployan 𛰀𛲠𛰁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#20": {
+    "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "no-spaces#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -387,6 +534,55 @@
   "no-spaces#13": {
     "cleaned": "mixed 😀️‍💩 end 🏴 stray",
     "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#14": {
+    "cleaned": "mongolian fvs4 ᠠ᠏ ok, stray ",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#15": {
+    "cleaned": "hangul filler ㄱㅤ ok, stray ; halfwidth ﾡﾠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#18": {
+    "cleaned": "egyptian 𓀀𓐰𓀁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#19": {
+    "cleaned": "duployan 𛰀𛲠𛰁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "no-spaces#20": {
+    "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
     "replacedSpaceCount": 0,
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
@@ -489,6 +685,55 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "paranoid#14": {
+    "cleaned": "mongolian fvs4 ᠠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#15": {
+    "cleaned": "hangul filler ㄱ ok, stray ; halfwidth ﾡ ok, stray ",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#18": {
+    "cleaned": "egyptian 𓀀𓀁 vs floating  here",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#19": {
+    "cleaned": "duployan 𛰀𛰁 vs floating  here",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "paranoid#20": {
+    "cleaned": "musical 𝄀𝄁 vs floating  here",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "strip-bidi#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -583,6 +828,55 @@
   "strip-bidi#13": {
     "cleaned": "mixed 😀️‍💩 end 🏴 stray",
     "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#14": {
+    "cleaned": "mongolian fvs4 ᠠ᠏ ok, stray ",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#15": {
+    "cleaned": "hangul filler ㄱㅤ ok, stray ; halfwidth ﾡﾠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#18": {
+    "cleaned": "egyptian 𓀀𓐰𓀁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#19": {
+    "cleaned": "duployan 𛰀𛲠𛰁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#20": {
+    "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
     "replacedSpaceCount": 0,
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
@@ -685,6 +979,55 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "strip-pua#14": {
+    "cleaned": "mongolian fvs4 ᠠ᠏ ok, stray ",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#15": {
+    "cleaned": "hangul filler ㄱㅤ ok, stray ; halfwidth ﾡﾠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#18": {
+    "cleaned": "egyptian 𓀀𓐰𓀁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#19": {
+    "cleaned": "duployan 𛰀𛲠𛰁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-pua#20": {
+    "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "everything#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -779,6 +1122,55 @@
   "everything#13": {
     "cleaned": "mixed 😀💩 end 🏴 stray",
     "removedCount": 6,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#14": {
+    "cleaned": "mongolian fvs4 ᠠ ok, stray ",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#15": {
+    "cleaned": "hangul filler ᄀ ok, stray ; halfwidth ᄀ ok, stray ",
+    "removedCount": 4,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 2
+  },
+  "everything#16": {
+    "cleaned": "noncharacters    end",
+    "removedCount": 3,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#17": {
+    "cleaned": "reserved ignorable      end",
+    "removedCount": 5,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#18": {
+    "cleaned": "egyptian 𓀀𓀁 vs floating  here",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#19": {
+    "cleaned": "duployan 𛰀𛰁 vs floating  here",
+    "removedCount": 2,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "everything#20": {
+    "cleaned": "musical 𝄀𝄁 vs floating  here",
+    "removedCount": 2,
     "replacedSpaceCount": 0,
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0

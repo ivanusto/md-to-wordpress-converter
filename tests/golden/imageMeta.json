@@ -685,16 +685,16 @@
     },
     "clean": {
       "true": {
-        "sha": "9091f606905efeb8",
-        "length": 108,
+        "sha": "23724d6b98bcf6b9",
+        "length": 307,
         "actions": [
           "drop top-level uuid box (XMP metadata)",
           "drop top-level jumb box (C2PA/JUMBF)"
         ]
       },
       "false": {
-        "sha": "9091f606905efeb8",
-        "length": 108,
+        "sha": "23724d6b98bcf6b9",
+        "length": 307,
         "actions": [
           "drop top-level uuid box (XMP metadata)",
           "drop top-level jumb box (C2PA/JUMBF)"
@@ -711,8 +711,8 @@
     },
     "clean": {
       "true": {
-        "sha": "4efb107ee8347de9",
-        "length": 40,
+        "sha": "12fa9b47ea974a2a",
+        "length": 84,
         "actions": [
           "drop top-level uuid box (UUID metadata)"
         ]
@@ -738,16 +738,16 @@
     },
     "clean": {
       "true": {
-        "sha": "3d8304b4512fa7ac",
-        "length": 76,
+        "sha": "8136e0406b6cf84a",
+        "length": 268,
         "actions": [
           "drop meta sub-box uuid (XMP metadata)",
           "drop meta sub-box xml  (XML metadata)"
         ]
       },
       "false": {
-        "sha": "3d8304b4512fa7ac",
-        "length": 76,
+        "sha": "8136e0406b6cf84a",
+        "length": 268,
         "actions": [
           "drop meta sub-box uuid (XMP metadata)",
           "drop meta sub-box xml  (XML metadata)"
@@ -766,17 +766,100 @@
     },
     "clean": {
       "true": {
-        "sha": "54783938d7ee7193",
-        "length": 76,
+        "sha": "25320df3150bd212",
+        "length": 122,
         "actions": [
           "drop top-level c2pa box (C2PA/JUMBF)"
         ]
       },
       "false": {
-        "sha": "54783938d7ee7193",
-        "length": 76,
+        "sha": "25320df3150bd212",
+        "length": 122,
         "actions": [
           "drop top-level c2pa box (C2PA/JUMBF)"
+        ]
+      }
+    }
+  },
+  "avif_truncated_tail": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "AVIF XMP uuid box: digitalSourceType, trainedAlgorithmicMedia, algorithmicMedia"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "77e5260a1e549529",
+        "length": 225,
+        "actions": [
+          "drop top-level uuid box (XMP metadata)",
+          "kept 12 bytes of truncated tail (file truncated)"
+        ]
+      },
+      "false": {
+        "sha": "77e5260a1e549529",
+        "length": 225,
+        "actions": [
+          "drop top-level uuid box (XMP metadata)",
+          "kept 12 bytes of truncated tail (file truncated)"
+        ]
+      }
+    }
+  },
+  "avif_truncated_junk": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "AVIF top-level box c2pa (C2PA/JUMBF manifest)"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "1367c0bec750d630",
+        "length": 89,
+        "actions": [
+          "drop top-level c2pa box (C2PA/JUMBF)"
+        ]
+      },
+      "false": {
+        "sha": "1367c0bec750d630",
+        "length": 89,
+        "actions": [
+          "drop top-level c2pa box (C2PA/JUMBF)"
+        ]
+      }
+    }
+  },
+  "png_truncated_tail": {
+    "format": "png",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": true,
+      "findings": [
+        "PNG tEXt: AI generator (Software=ChatGPT)",
+        "truncated chunk b'IDAT'"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "a6ebeb9d2f4447f7",
+        "length": 47,
+        "actions": [
+          "drop chunk tEXt",
+          "kept 14 bytes of truncated chunk IDAT tail (file truncated)"
+        ]
+      },
+      "false": {
+        "sha": "a6ebeb9d2f4447f7",
+        "length": 47,
+        "actions": [
+          "drop chunk tEXt",
+          "kept 14 bytes of truncated chunk IDAT tail (file truncated)"
         ]
       }
     }
