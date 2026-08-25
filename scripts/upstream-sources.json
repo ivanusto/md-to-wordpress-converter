@@ -16,12 +16,12 @@
       "id": "unmark-web/js/image_meta.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/image_meta.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/image_meta.js",
-      "sha256": "bbce4a8de531e22f154ccd71c0fd0332d026b1db8ee89b02cda44c54c231272b",
+      "sha256": "8cd115d4ba7cbdd3f406ef312b6f8acc0707d32f0a3975677d90f98a16214f69",
       "mirrors": [
         "src/utils/imageMeta.ts",
         "tests/golden/imageMeta.json"
       ],
-      "comment": "Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here \u2014 it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js."
+      "comment": "Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here \u2014 it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Partial in a third way since unmark-web v0.4.0: that release exported this module's four ISOBMFF primitives and added an inspectIsobmff byteScan option, both for its new js/av_meta.js (MP4/MOV/M4A/WAV/MP3/FLAC). The option defaults to the previous behaviour and nothing else changed, so both goldens regenerate byte-identical; this project has no audio or video path to mirror it into."
     },
     {
       "id": "watermarks-remover/service/scripts/text_unicode.py",
