@@ -6,7 +6,7 @@
       "id": "unmark-web/js/layer_a.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/layer_a.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/layer_a.js",
-      "sha256": "530f5ebd866fc7445a2499bd7dfc8a7c55f66ed59e18980363bac41705a617c0",
+      "sha256": "e882e14a15d5903589abf70e0f58426738fde0460ccd566c3c511efb31848837",
       "mirrors": [
         "src/utils/aiWatermarkCleaner.ts",
         "tests/golden/layerA.json"
@@ -16,7 +16,7 @@
       "id": "unmark-web/js/image_meta.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/image_meta.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/image_meta.js",
-      "sha256": "55fc29798e786879fd82430af32b57ce43a218821b650367410cbc2fdf5e885a",
+      "sha256": "bbce4a8de531e22f154ccd71c0fd0332d026b1db8ee89b02cda44c54c231272b",
       "mirrors": [
         "src/utils/imageMeta.ts",
         "tests/golden/imageMeta.json"
@@ -27,7 +27,7 @@
       "id": "watermarks-remover/service/scripts/text_unicode.py",
       "url": "https://raw.githubusercontent.com/guillaumemeyer/watermarks-remover/main/service/scripts/text_unicode.py",
       "history": "https://github.com/guillaumemeyer/watermarks-remover/commits/main/service/scripts/text_unicode.py",
-      "sha256": "ab0197b06263ad83a489032be69103e9a8725c72ddc3cf002a260c87b02647ac",
+      "sha256": "ed86ed9715f40e306371731f97bf6f2a63f6a7719674630afac89eb3741bc6fd",
       "mirrors": [
         "src/utils/aiWatermarkCleaner.ts"
       ],
@@ -37,11 +37,11 @@
       "id": "watermarks-remover/service/scripts/image_meta.py",
       "url": "https://raw.githubusercontent.com/guillaumemeyer/watermarks-remover/main/service/scripts/image_meta.py",
       "history": "https://github.com/guillaumemeyer/watermarks-remover/commits/main/service/scripts/image_meta.py",
-      "sha256": "78e5a67db243a4eac2a97b97cea036faae448bdaa2d77c59182af2c972657794",
+      "sha256": "3bde868717f5ae216c578f1f669021fa90551c1acbf846f15cb817fe3339cf34",
       "mirrors": [
         "src/utils/imageMeta.ts"
       ],
-      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here \u2014 it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Also partial in a second way since watermarks-remover#156: that change hardened the error handling around the external c2patool subprocess, which has no counterpart in a browser or in this converter."
+      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here \u2014 it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Also partial in a second way since watermarks-remover#156: that change hardened the error handling around the external c2patool subprocess, which has no counterpart in a browser or in this converter. Partial in a third way since watermarks-remover 8e16b822, which passes creationflags=subprocess_creationflags to every subprocess.run so a child process opens no console window on Windows: neither a browser nor this converter starts child processes."
     }
   ]
 }

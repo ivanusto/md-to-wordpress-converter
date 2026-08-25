@@ -146,6 +146,13 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "default#21": {
+    "cleaned": "singletons ‼️ ⁉️ ℹ️ ⤴️ ⤵️, zwj ℹ️‍💡, stray a here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "nfkc#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -293,6 +300,13 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "nfkc#21": {
+    "cleaned": "singletons !!️ !?️ i️ ⤴️ ⤵️, zwj i️‍💡, stray a here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 4
+  },
   "aggressive#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -435,6 +449,13 @@
   },
   "aggressive#20": {
     "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "aggressive#21": {
+    "cleaned": "singletons ‼️ ⁉️ ℹ️ ⤴️ ⤵️, zwj ℹ️‍💡, stray a here",
     "removedCount": 1,
     "replacedSpaceCount": 0,
     "replacedConfusableCount": 0,
@@ -587,6 +608,13 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "no-spaces#21": {
+    "cleaned": "singletons ‼️ ⁉️ ℹ️ ⤴️ ⤵️, zwj ℹ️‍💡, stray a here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "paranoid#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -734,6 +762,13 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "paranoid#21": {
+    "cleaned": "singletons ‼ ⁉ ℹ ⤴ ⤵, zwj ℹ💡, stray a here",
+    "removedCount": 8,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "strip-bidi#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -876,6 +911,13 @@
   },
   "strip-bidi#20": {
     "cleaned": "musical 𝄀𝅳𝄁 vs floating  here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
+  "strip-bidi#21": {
+    "cleaned": "singletons ‼️ ⁉️ ℹ️ ⤴️ ⤵️, zwj ℹ️‍💡, stray a here",
     "removedCount": 1,
     "replacedSpaceCount": 0,
     "replacedConfusableCount": 0,
@@ -1028,6 +1070,13 @@
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
   },
+  "strip-pua#21": {
+    "cleaned": "singletons ‼️ ⁉️ ℹ️ ⤴️ ⤵️, zwj ℹ️‍💡, stray a here",
+    "removedCount": 1,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 0
+  },
   "everything#0": {
     "cleaned": "plain ascii",
     "removedCount": 0,
@@ -1174,5 +1223,12 @@
     "replacedSpaceCount": 0,
     "replacedConfusableCount": 0,
     "nfkcChangedCount": 0
+  },
+  "everything#21": {
+    "cleaned": "singletons !! !? i ⤴ ⤵, zwj i💡, stray a here",
+    "removedCount": 8,
+    "replacedSpaceCount": 0,
+    "replacedConfusableCount": 0,
+    "nfkcChangedCount": 4
   }
 }
