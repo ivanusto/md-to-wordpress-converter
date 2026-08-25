@@ -85,6 +85,12 @@ npm run build
 
 This project ships continuously from `master` rather than on tagged releases, so entries are grouped by date. / 本專案沒有版本標籤，直接從 `master` 持續部署，因此以日期分組。
 
+### 2026-08-25
+
+- **Five more emoji bases (再多五個 emoji 基底字元)**: mirrors guillaumemeyer/watermarks-remover#200. `U+203C`, `U+2049`, `U+2139`, `U+2934` and `U+2935` are Emoji=Yes but sit outside the block ranges the base test covered, so a VS16 after them was stripped and the emoji reverted to its text glyph.
+- **Benign JPEG comments survive (良性的 JPEG 註解會保留)**: mirrors guillaumemeyer/watermarks-remover#216. A `COM` segment is unkeyed free text, so it is dropped only when all metadata was requested or the comment carries a real provenance marker. The same change narrowed the whole-file C2PA byte scan for JPEG, so a bare `jumb` or the XMP InstanceID namespace no longer promotes a file to C2PA on its own.
+- **The marker scanner stopped building strings (標記掃描不再組字串)**: `containsAny` walks the bytes behind a first-byte dispatch table instead of turning the whole file into a latin-1 string and lowercasing it. Same result list, same order, same duplicate entries.
+
 ### 2026-08-21
 
 - **Layer A hardening (Layer A 強化)**: mirrors guillaumemeyer/watermarks-remover#133. `U+180F`, `U+3164` and `U+FFA0` are kept next to their own script and stripped when they float; Unicode noncharacters and reserved default-ignorable code points are now removed; layout format controls (Egyptian hieroglyph quadrat, Duployan shorthand, musical beaming) are kept next to their own script.

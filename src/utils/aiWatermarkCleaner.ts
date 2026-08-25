@@ -202,6 +202,15 @@ const isEmojiBase = (cp: number): boolean =>
   (cp >= 0x2190 && cp <= 0x25ff) ||
   (cp >= 0x2600 && cp <= 0x27bf) ||
   (cp >= 0x2b00 && cp <= 0x2bff) ||
+  // Emoji=Yes singletons outside the ranges above (general punctuation,
+  // letterlike symbols, supplemental arrows-B): !!, !?, i, curved up/down
+  // arrows. Without these a VS16 after them is stripped, visibly turning
+  // the emoji presentation back into the text glyph.
+  cp === 0x203c ||
+  cp === 0x2049 ||
+  cp === 0x2139 ||
+  cp === 0x2934 ||
+  cp === 0x2935 ||
   cp === 0x00a9 ||
   cp === 0x00ae ||
   cp === 0x2122 ||
