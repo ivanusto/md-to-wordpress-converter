@@ -3,6 +3,7 @@ import { ShieldCheck, Upload, Download, CheckCircle2, AlertTriangle, X } from 'l
 import type { AppLanguage } from '../types';
 import { t } from '../utils/i18n';
 import { clean, inspect, SUPPORTED_IMAGE_EXTENSIONS } from '../utils/imageMeta';
+import { AV_EXTS, cleanAvFile, inspectAvFile, SUPPORTED_AV_EXTENSIONS } from '../utils/avMeta';
 
 interface CleanedImage {
   id: string;
@@ -16,7 +17,16 @@ interface CleanedImage {
   url: string;
   downloadName: string;
   error?: string;
+  /** The file ended mid-box, so the result cannot be called clean. */
+  incomplete?: boolean;
 }
+
+/* Routing is by extension, not by magic bytes: an MP4 and an AVIF both open
+ * with an `ftyp` box, so a sniffer cannot tell the image path from the video
+ * one. This is how unmark-web's own app splits them. */
+const AV_EXT_SET = new Set(AV_EXTS);
+const extOf = (name: string): string => (name.split('.').pop() ?? '').toLowerCase();
+const ACCEPT = [...SUPPORTED_IMAGE_EXTENSIONS, ...SUPPORTED_AV_EXTENSIONS].join(',');
 
 interface ImageMetaCleanerProps {
   lang: AppLanguage;
@@ -44,13 +54,42 @@ export const ImageMetaCleaner: React.FC<ImageMetaCleanerProps> = ({ lang, onShow
         const id = `img-clean-${seq.current++}`;
         const base = { id, name: file.name, originalSize: file.size };
         try {
+          const unsupported = {
+            ...base, format: 'unknown', cleanedSize: file.size, findings: [], actions: [],
+            removedCount: 0, url: '', downloadName: '', error: t('imgclean.unsupported', lang),
+          };
+
+          if (AV_EXT_SET.has(extOf(file.name))) {
+            /* The slice driver reads box and chunk headers through File.slice()
+             * and returns a Blob of slices of the original, so a long recording
+             * is cleaned without ever being held in this tab. */
+            const report = await inspectAvFile(file);
+            if (report.format === 'unknown') {
+              processed.push(unsupported);
+              continue;
+            }
+            const result = await cleanAvFile(file, {
+              stripAllMetadata: true,
+              type: file.type || 'application/octet-stream',
+            });
+            processed.push({
+              ...base,
+              format: result.format,
+              cleanedSize: result.blob.size,
+              findings: report.findings,
+              actions: result.actions,
+              removedCount: result.actions.filter((a) => a.startsWith('drop')).length,
+              url: URL.createObjectURL(result.blob),
+              downloadName: cleanedName(file.name),
+              incomplete: result.inspectionIncomplete,
+            });
+            continue;
+          }
+
           const data = new Uint8Array(await file.arrayBuffer());
           const report = inspect(data);
           if (report.format === 'unknown') {
-            processed.push({
-              ...base, format: 'unknown', cleanedSize: file.size, findings: [], actions: [],
-              removedCount: 0, url: '', downloadName: '', error: t('imgclean.unsupported', lang),
-            });
+            processed.push(unsupported);
             continue;
           }
           const result = clean(data, { stripAllMetadata: true });
@@ -130,7 +169,7 @@ export const ImageMetaCleaner: React.FC<ImageMetaCleanerProps> = ({ lang, onShow
           ref={inputRef}
           type="file"
           multiple
-          accept={SUPPORTED_IMAGE_EXTENSIONS.join(',')}
+          accept={ACCEPT}
           style={{ display: 'none' }}
           onChange={(e) => {
             if (e.target.files?.length) void handleFiles(e.target.files);
@@ -167,6 +206,9 @@ export const ImageMetaCleaner: React.FC<ImageMetaCleanerProps> = ({ lang, onShow
                         ? t('imgclean.removed', lang, { n: r.removedCount })
                         : t('imgclean.alreadyClean', lang)}
                     </p>
+                    {r.incomplete && (
+                      <p className="imgclean-error">{t('imgclean.truncated', lang)}</p>
+                    )}
                     {r.findings.length > 0 && (
                       <ul className="imgclean-findings">
                         {r.findings.map((f, i) => (

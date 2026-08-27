@@ -33,9 +33,10 @@ An open-source, privacy-first, 100% client-side web application built with React
 - 💡 **GitHub-Flavored Callouts (提示框支援)**: Fully converts `> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, and `> [!IMPORTANT]` blockquotes into beautifully styled Gutenberg callouts.
 - 🌐 **Full Multilingual Support (繁體中文 / English i18n)**: Seamless language switcher with browser locale detection and persistence.
 - 🎨 **4 Typographic Themes & 5 Code Themes**: WordPress Gutenberg, Editorial Serif, Tech Dark, Corporate Slate with VS Code, GitHub Light, Dracula, Monokai Pro, and Atom One Dark syntax highlighting.
-- 🖼️ **Image Metadata & C2PA Stripper (圖片中繼資料清除)**: Drop PNG, JPEG, WebP, AVIF, HEIC or GIF files into the image panel to remove C2PA/Content Credentials, EXIF, XMP and AI provenance blocks before uploading them to WordPress, then download the cleaned file. Byte-level container surgery: pixels are never re-encoded, so quality is untouched. Ported from [unmark-web](https://github.com/ivanusto/unmark-web) and pinned to it by golden tests.
+- 🖼️ **Media Metadata & C2PA Stripper (圖片與影音中繼資料清除)**: Drop PNG, JPEG, WebP, AVIF, HEIC, GIF, MP4, MOV, M4A, M4V, MP3, WAV or FLAC files into the panel to remove C2PA/Content Credentials, EXIF, XMP, ID3 and AI provenance blocks before uploading them to WordPress, then download the cleaned file. Byte-level container surgery: pixels, samples and waveforms are never re-encoded, so quality is untouched. Ported from [unmark-web](https://github.com/ivanusto/unmark-web) and pinned to it by golden tests.
   - **A cleaned AVIF or HEIC keeps its original size.** A dropped ISOBMFF box is overwritten with an equal-size `free` box rather than spliced out, because closing the gap would shift every absolute media offset later in the file and break the image. The metadata is still gone: the `free` payload is zeroed.
-  - **A truncated file keeps its truncated tail.** If an upload was cut short, the last PNG chunk or ISOBMFF box declares more bytes than the file holds. That tail is copied through verbatim and reported as an action, so a recoverable image is not turned into an unopenable husk that claims it was already clean.
+  - **A truncated file keeps its truncated tail.** If an upload was cut short, the last PNG chunk or ISOBMFF box declares more bytes than the file holds. That tail is copied through verbatim and reported as an action, so a recoverable file is not turned into an unopenable husk that claims it was already clean. A truncated MP4 is additionally reported as unverified rather than clean, since the part that was preserved was never inspected.
+  - **Cleaning a video does not mean holding it.** Audio and video go through a second driver that walks box and chunk headers through `File.slice()` and hands back a `Blob` of slices of the original file. Metadata is a few hundred bytes at known offsets, so a long recording costs no more memory than a short one. The buffer driver is what the golden tests pin byte for byte; a test asserts the two agree on every fixture.
 - 🔒 **100% Privacy-First (純前端本地運算)**: Everything is processed in browser memory with zero server uploads or tracking.
 
 ---
@@ -63,7 +64,7 @@ npm install
 # Start local development server (http://localhost:5173)
 npm run dev
 
-# Run the test suite (golden tests for both cleaners)
+# Run the test suite (golden tests for the text, image and media cleaners)
 npm test
 
 # Check whether the code these cleaners were ported from has changed upstream
@@ -77,13 +78,20 @@ npm run build
 
 ## 🔄 Keeping the ported cleaners in sync
 
-`src/utils/aiWatermarkCleaner.ts` and `src/utils/imageMeta.ts` are hand-written ports of code that lives in [unmark-web](https://github.com/ivanusto/unmark-web) and, further upstream, in [watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover). Nothing in this repository can tell when that code changes, so `.github/workflows/upstream-check.yml` hashes those four files daily and opens an issue when one moves; it closes the issue again once the hashes match. The recorded hashes live in `scripts/upstream-sources.json` and should be updated in the same commit that re-ports the change.
+`src/utils/aiWatermarkCleaner.ts`, `src/utils/imageMeta.ts` and `src/utils/avMeta.ts` are hand-written ports of code that lives in [unmark-web](https://github.com/ivanusto/unmark-web) and, further upstream, in [watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover). Nothing in this repository can tell when that code changes, so `.github/workflows/upstream-check.yml` hashes those six files daily and opens an issue when one moves; it closes the issue again once the hashes match. The recorded hashes live in `scripts/upstream-sources.json` and should be updated in the same commit that re-ports the change.
 
 ---
 
 ## 📅 Changelog / 版本紀錄
 
 This project ships continuously from `master` rather than on tagged releases, so entries are grouped by date. / 本專案沒有版本標籤，直接從 `master` 持續部署，因此以日期分組。
+
+### 2026-08-28
+
+- **Audio and video (影音中繼資料清除)**: `src/utils/avMeta.ts` ports unmark-web's `js/av_meta.js`, so MP4/MOV/M4A/M4V, MP3, WAV and FLAC are cleaned in the browser alongside images. Top-level `jumb`/`c2pa`/`uuid` (XMP) ISOBMFF boxes and `moov/udta` generator tags; WAV `C2PA`, `LIST INFO` and `id3 ` chunks; ID3v2 frames in MP3; C2PA's `GEOB application/c2pa` frame in FLAC. Both drivers are ported: the buffer one the goldens pin, and the slice one the panel uses so a video is never held in memory. Unlike the image port there is no deliberate format gap; every container unmark-web handles is handled here.
+- **`imageMeta.ts` exports its ISOBMFF primitives**, and `inspectIsobmff` takes a `byteScan` option, both for the new module. The option defaults to the previous behaviour, so the image goldens regenerate byte-identical.
+- **Two new tracked sources**: `unmark-web/js/av_meta.js` and `watermarks-remover/service/scripts/av_meta.py`. The daily drift check now watches six files instead of four.
+- **The panel copy said images only**, including for GIF, which it had supported since 2026-08-17. It now names every format it takes.
 
 ### 2026-08-25
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Regenerates tests/golden/imageMeta.json and tests/golden/layerA.json from the
- * reference implementation —
- * ivanusto/unmark-web's js/image_meta.js — and never from this project's own
- * TypeScript. Goldens produced by the code under test assert nothing; the point
+ * Regenerates tests/golden/imageMeta.json, tests/golden/avMeta.json and
+ * tests/golden/layerA.json from the reference implementation —
+ * ivanusto/unmark-web's js/image_meta.js, js/av_meta.js and js/layer_a.js — and
+ * never from this project's own TypeScript. Goldens produced by the code under test assert nothing; the point
  * of this file is to pin the port against something independently verified
  * (unmark-web is itself parity-tested against upstream's Python).
  *
@@ -35,10 +35,12 @@ if (!REF_DIR) {
 }
 
 const REF = path.join(REF_DIR, 'image_meta.js');
+const REF_AV = path.join(REF_DIR, 'av_meta.js');
 const REF_TEXT = path.join(REF_DIR, 'layer_a.js');
 const ImageMeta = require(REF);
+const AvMeta = require(REF_AV);
 const LayerA = require(REF_TEXT);
-const { IMAGE_SAMPLES, TEXT_CASES, TEXT_OPTION_SETS } = await import(path.join(ROOT, 'tests', 'samples.ts'));
+const { IMAGE_SAMPLES, AV_SAMPLES, TEXT_CASES, TEXT_OPTION_SETS } = await import(path.join(ROOT, 'tests', 'samples.ts'));
 
 const sha = (u8) => createHash('sha256').update(Buffer.from(u8)).digest('hex').slice(0, 16);
 
@@ -61,6 +63,47 @@ const out = path.join(ROOT, 'tests', 'golden', 'imageMeta.json');
 fs.writeFileSync(out, JSON.stringify(golden, null, 2) + '\n');
 console.error(`wrote ${Object.keys(golden).length} entries to ${path.relative(ROOT, out)}`);
 console.error(`reference: ${path.relative(ROOT, REF)} (sha256 ${createHash('sha256').update(fs.readFileSync(REF)).digest('hex').slice(0, 12)})`);
+
+// ------------------------------------------------------- audio and video
+//
+// Both drivers are recorded. The buffer driver is the one the port is pinned to
+// byte for byte; the slice driver is recorded alongside it so a divergence
+// between the two shows up here rather than only in this project's own tests.
+const avGolden = {};
+for (const [name, data] of Object.entries(AV_SAMPLES)) {
+  const ins = AvMeta.inspectAv(data);
+  const entry = {
+    format: ins.format,
+    inspect: {
+      hasC2pa: ins.has_c2pa,
+      hasAiMetadata: ins.has_ai_metadata,
+      findings: ins.findings,
+      notes: ins.notes,
+    },
+    clean: {},
+  };
+  for (const stripAllMetadata of [true, false]) {
+    let value;
+    try {
+      const c = AvMeta.cleanAv(data, { stripAllMetadata });
+      value = {
+        sha: sha(c.data),
+        length: c.data.length,
+        actions: c.actions,
+        inspectionIncomplete: c.inspectionIncomplete,
+      };
+    } catch (e) {
+      value = { error: String(e.message) };
+    }
+    entry.clean[String(stripAllMetadata)] = value;
+  }
+  avGolden[name] = entry;
+}
+
+const avOut = path.join(ROOT, 'tests', 'golden', 'avMeta.json');
+fs.writeFileSync(avOut, JSON.stringify(avGolden, null, 2) + '\n');
+console.error(`wrote ${Object.keys(avGolden).length} entries to ${path.relative(ROOT, avOut)}`);
+console.error(`reference: ${path.relative(ROOT, REF_AV)} (sha256 ${createHash('sha256').update(fs.readFileSync(REF_AV)).digest('hex').slice(0, 12)})`);
 
 // ---------------------------------------------------------------- Layer A
 //
