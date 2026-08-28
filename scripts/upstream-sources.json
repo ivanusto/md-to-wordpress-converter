@@ -48,22 +48,22 @@
       "id": "watermarks-remover/service/scripts/image_meta.py",
       "url": "https://raw.githubusercontent.com/guillaumemeyer/watermarks-remover/main/service/scripts/image_meta.py",
       "history": "https://github.com/guillaumemeyer/watermarks-remover/commits/main/service/scripts/image_meta.py",
-      "sha256": "3bde868717f5ae216c578f1f669021fa90551c1acbf846f15cb817fe3339cf34",
+      "sha256": "4fb8990b4743b9123f543dd87a2f589c0bbbecf5f5ce5447c9548b43c5306806",
       "mirrors": [
         "src/utils/imageMeta.ts"
       ],
-      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here — it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Also partial in a second way since watermarks-remover#156: that change hardened the error handling around the external c2patool subprocess, which has no counterpart in a browser or in this converter. Partial in a third way since watermarks-remover 8e16b822, which passes creationflags=subprocess_creationflags to every subprocess.run so a child process opens no console window on Windows: neither a browser nor this converter starts child processes."
+      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here — it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Also partial in a second way since watermarks-remover#156: that change hardened the error handling around the external c2patool subprocess, which has no counterpart in a browser or in this converter. Partial in a third way since watermarks-remover 8e16b822, which passes creationflags=subprocess_creationflags to every subprocess.run so a child process opens no console window on Windows: neither a browser nor this converter starts child processes. Partial in two more ways since 2026-08-27: upstream #252 refuses HTTP redirects in _synthid_score_http to block SSRF, and #254 adds a `changed` field to clean_image's returned dict for clean_file.py's new --only-changed flag. Neither has a counterpart here: this converter makes no HTTP calls, and clean() returns bytes rather than writing a file, so the caller already holds both sides to compare."
     },
     {
       "id": "watermarks-remover/service/scripts/av_meta.py",
       "url": "https://raw.githubusercontent.com/guillaumemeyer/watermarks-remover/main/service/scripts/av_meta.py",
       "history": "https://github.com/guillaumemeyer/watermarks-remover/commits/main/service/scripts/av_meta.py",
-      "sha256": "579b01cbac34db22621b19d20f37a85f349f2daf1a99028d02a87ec8e1e77298",
+      "sha256": "213e9fd53130d80165ede74338a6564cc6daba7aa1fe4af8fb733e69550855ee",
       "mirrors": [
         "src/utils/avMeta.ts",
         "tests/golden/avMeta.json"
       ],
-      "comment": "Root source. Changes here land in unmark-web first; this entry catches the window before that happens. Partial in one way: inspect_av and clean_av take filesystem paths and use safe_write_bytes, and clean_av re-inspects what it wrote, none of which has a counterpart in a browser. The reporting that re-inspection feeds, including inspection_incomplete, is mirrored."
+      "comment": "Root source. Changes here land in unmark-web first; this entry catches the window before that happens. Partial in one way: inspect_av and clean_av take filesystem paths and use safe_write_bytes, and clean_av re-inspects what it wrote, none of which has a counterpart in a browser. The reporting that re-inspection feeds, including inspection_incomplete, is mirrored. Partial in one more way since upstream #254: clean_av's returned dict gained a `changed` field for clean_file.py's new --only-changed flag. cleanAv here returns the bytes rather than writing a file, so the caller already holds both sides to compare."
     }
   ]
 }
