@@ -792,6 +792,14 @@ export function stripWebp(
 // ------------------------------------------------------- AVIF / HEIC (ISOBMFF)
 const XMP_UUID = [0xbe, 0x7a, 0xcf, 0xcb, 0x97, 0xa9, 0x42, 0xe8, 0x9c, 0x71, 0x99, 0x94, 0x91, 0xe3, 0xaf, 0xac];
 
+/*
+ * C2PA stores its manifest in BMFF containers (MP4/MOV/HEIF/AVIF) as a
+ * top-level `uuid` box whose user type is this ContentProvenanceBox UUID, not
+ * as a `c2pa` box. c2pa-rs writes it this way for video and for AVIF/HEIC
+ * images (upstream watermarks-remover#264).
+ */
+const C2PA_BMFF_UUID = [0xd8, 0xfe, 0xc3, 0xd6, 0x1b, 0x0e, 0x48, 0x3c, 0x92, 0x97, 0x58, 0x28, 0x87, 0x7e, 0xc4, 0x81];
+
 export interface IsoBox {
   fourcc: string;
   payload: Uint8Array;
@@ -837,6 +845,43 @@ const isC2paBox = (fourcc: string): boolean =>
 const isXmpUuid = (payload: Uint8Array): boolean =>
   payload.length >= 16 && XMP_UUID.every((b, i) => payload[i] === b);
 
+/*
+ * True when a `uuid` box is a C2PA content-provenance box. The user type sits
+ * immediately after the `uuid` fourcc, but some writers put a 4-byte FullBox
+ * version/flags prefix before it, so accept the UUID at payload offset 0 or 4.
+ * Recognizing it by user type keeps detection and stripping deterministic
+ * instead of depending on ASCII `c2pa`/`jumb` appearing in the manifest
+ * payload. The explicit length check is what makes this match the reference
+ * implementation's `payload[:16] == UUID`: a short slice compares unequal
+ * there, while a short subarray here would run out of bytes mid-comparison.
+ */
+const uuidAt = (u8: Uint8Array, off: number): boolean =>
+  u8.length >= off + 16 && C2PA_BMFF_UUID.every((b, i) => u8[off + i] === b);
+export const isC2paProvBox = (payload: Uint8Array): boolean => uuidAt(payload, 0) || uuidAt(payload, 4);
+
+/*
+ * True when `u8` holds a BMFF `uuid` box with the C2PA user type. Used only by
+ * the whole-file fallback in inspectIsobmff, when the box walk cannot parse a
+ * header. Requiring the UUID to follow a `uuid` fourcc (optionally after a
+ * 4-byte FullBox prefix) keeps a coincidental UUID byte sequence inside `mdat`
+ * or another container from being reported as C2PA.
+ */
+export function containsC2paProvBox(u8: Uint8Array): boolean {
+  // `uuid` in ASCII; the search is case-sensitive, like the reference bytes.find.
+  let pos = 0;
+  for (;;) {
+    const idx = u8.indexOf(0x75, pos);
+    if (idx === -1 || idx + 4 > u8.length) return false;
+    if (u8[idx + 1] === 0x75 && u8[idx + 2] === 0x69 && u8[idx + 3] === 0x64) {
+      const after = u8.subarray(idx + 4, idx + 24);
+      if (uuidAt(after, 0) || uuidAt(after, 4)) return true;
+      pos = idx + 4;
+    } else {
+      pos = idx + 1;
+    }
+  }
+}
+
 export function inspectIsobmff(
   u8: Uint8Array,
   fmt: string,
@@ -874,6 +919,9 @@ export function inspectIsobmff(
         const hits = containsAny(payload.subarray(16), ALL_HINTS);
         findings.push(hits.length ? `${F} XMP uuid box: ${hits.slice(0, 8).join(', ')}` : `${F} XMP uuid box`);
         if (strong(hits, C2PA_STRONG)) hasC2pa = true;
+      } else if (isC2paProvBox(payload)) {
+        hasC2pa = true;
+        findings.push(`${F} uuid box (C2PA content-provenance manifest, user type d8fec3d6...)`);
       } else {
         const hits = containsAny(payload, ALL_HINTS);
         if (hits.length) {
@@ -894,6 +942,9 @@ export function inspectIsobmff(
             const hits = containsAny(sub.payload.subarray(16), ALL_HINTS);
             findings.push(hits.length ? `${F} meta XMP uuid: ${hits.slice(0, 8).join(', ')}` : `${F} meta XMP uuid box`);
             if (strong(hits, C2PA_STRONG_CORE)) hasC2pa = true;
+          } else if (isC2paProvBox(sub.payload)) {
+            hasC2pa = true;
+            findings.push(`${F} meta uuid box (C2PA content-provenance manifest)`);
           } else {
             const hits = containsAny(sub.payload, ALL_HINTS);
             if (hits.length) {
@@ -921,6 +972,12 @@ export function inspectIsobmff(
     if (whole.length && !hasC2pa) {
       hasC2pa = true;
       findings.push(`byte-scan C2PA markers: ${whole.slice(0, 6).join(', ')}`);
+    } else if (!whole.length && containsC2paProvBox(u8) && !hasC2pa) {
+      // A C2PA content-provenance uuid box whose manifest bytes carry no ASCII
+      // 'c2pa'/'jumb' marker (an auxiliary "merkle" box, or a truncated
+      // manifest) is still a manifest box; catch it by user type.
+      hasC2pa = true;
+      findings.push('byte-scan C2PA BMFF content-provenance user type');
     }
   }
   return { hasC2pa, hasAiMetadata: hasAiMetadata || hasC2pa, findings };
@@ -976,6 +1033,11 @@ export function stripIsobmff(
         out.push(isobmffFreeBox(size, headerSize));
         continue;
       }
+      if (isC2paProvBox(payload)) {
+        actions.push(`drop top-level ${fourcc} box (C2PA content-provenance manifest)`);
+        out.push(isobmffFreeBox(size, headerSize));
+        continue;
+      }
       if (stripAllMetadata || containsAny(payload, ALL_HINTS).length) {
         actions.push(`drop top-level ${fourcc} box (UUID metadata)`);
         out.push(isobmffFreeBox(size, headerSize));
@@ -996,6 +1058,11 @@ export function stripIsobmff(
         if (sName === 'uuid') {
           if (isXmpUuid(sub.payload)) {
             actions.push(`drop meta sub-box ${sName} (XMP metadata)`);
+            cleanSub.push(isobmffFreeBox(sub.size, sub.headerSize));
+            continue;
+          }
+          if (isC2paProvBox(sub.payload)) {
+            actions.push(`drop meta sub-box ${sName} (C2PA content-provenance manifest)`);
             cleanSub.push(isobmffFreeBox(sub.size, sub.headerSize));
             continue;
           }

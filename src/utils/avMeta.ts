@@ -37,6 +37,7 @@ import {
   C2PA_MARKERS,
   buildIsobmffBox,
   containsAny,
+  containsC2paProvBox,
   inspectIsobmff,
   isobmffFreeBox,
   parseIsobmffBoxes,
@@ -645,6 +646,25 @@ export async function containsAnyInFile(
   return needles.filter((n) => found.has(n));
 }
 
+/**
+ * The chunked counterpart of imageMeta's containsC2paProvBox, for the same
+ * reason containsAnyInFile exists: the buffer driver scans the whole file at
+ * once, this one has to reach the same answer without holding it. The match
+ * window is the `uuid` fourcc plus the 20 bytes after it, so consecutive chunks
+ * overlap by one byte less than that.
+ */
+export async function containsC2paProvBoxInFile(file: Blob, chunkSize = SCAN_CHUNK): Promise<boolean> {
+  const overlap = 27;
+  let pos = 0;
+  while (pos < file.size) {
+    const end = Math.min(pos + chunkSize, file.size);
+    const u8 = await bytesOf(file, Math.max(0, pos - overlap), end);
+    if (containsC2paProvBox(u8)) return true;
+    pos = end;
+  }
+  return false;
+}
+
 interface BoxIndexEntry {
   fourcc: string;
   start: number;
@@ -714,6 +734,9 @@ async function inspectMp4File(file: Blob): Promise<Layer> {
   if (whole.length && !hasC2pa) {
     hasC2pa = true;
     findings.push(`byte-scan C2PA markers: ${whole.slice(0, 6).join(', ')}`);
+  } else if (!whole.length && !hasC2pa && (await containsC2paProvBoxInFile(file))) {
+    hasC2pa = true;
+    findings.push('byte-scan C2PA BMFF content-provenance user type');
   }
   hasAiMetadata = hasAiMetadata || hasC2pa; // inspectIsobmff folds these together
   findings.push(...udtaFindings);

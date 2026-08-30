@@ -286,6 +286,178 @@
       }
     }
   },
+  "mp4_c2pa_prov": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "MP4 uuid box (C2PA content-provenance manifest, user type d8fec3d6...)"
+      ],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "9893020de4fa5c12",
+        "length": 721,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "9893020de4fa5c12",
+        "length": 721,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
+  "mp4_c2pa_prov_no_marker": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "MP4 uuid box (C2PA content-provenance manifest, user type d8fec3d6...)"
+      ],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "20dd5fbb796d417b",
+        "length": 764,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "20dd5fbb796d417b",
+        "length": 764,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
+  "mp4_c2pa_prov_merkle": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "MP4 uuid box (C2PA content-provenance manifest, user type d8fec3d6...)"
+      ],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "ef34788e1cba5999",
+        "length": 826,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "ef34788e1cba5999",
+        "length": 826,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
+  "mp4_c2pa_prov_fullbox": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "MP4 uuid box (C2PA content-provenance manifest, user type d8fec3d6...)"
+      ],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "437eea8a79050f2c",
+        "length": 709,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "437eea8a79050f2c",
+        "length": 709,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
+  "mp4_c2pa_prov_update_last": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "MP4 uuid box (C2PA content-provenance manifest, user type d8fec3d6...)"
+      ],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "c6a84768d36fe79a",
+        "length": 730,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "c6a84768d36fe79a",
+        "length": 730,
+        "actions": [
+          "drop top-level uuid box (C2PA content-provenance manifest)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
+  "mp4_uuid_c2pa_bytes_bad_offset": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": [],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "dbd913a22df9f862",
+        "length": 707,
+        "actions": [
+          "drop top-level uuid box (UUID metadata)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "05a0e36ae2fc198b",
+        "length": 707,
+        "actions": [
+          "no MP4 metadata boxes removed (already clean or none matched)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
   "wav_clean": {
     "format": "wav",
     "inspect": {

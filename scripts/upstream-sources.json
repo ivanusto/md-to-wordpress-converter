@@ -16,23 +16,23 @@
       "id": "unmark-web/js/image_meta.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/image_meta.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/image_meta.js",
-      "sha256": "8cd115d4ba7cbdd3f406ef312b6f8acc0707d32f0a3975677d90f98a16214f69",
+      "sha256": "94549b339304aa9bb8e2b69f38d2110dc4e6f441fd4ad8fab120f5807c83e2a3",
       "mirrors": [
         "src/utils/imageMeta.ts",
         "tests/golden/imageMeta.json"
       ],
-      "comment": "Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here — it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. The ISOBMFF primitives this module exports since unmark-web v0.4.0, and the inspectIsobmff byteScan option added with them, are now mirrored here and used by src/utils/avMeta.ts. byteScan defaults to the previous behaviour, so the image goldens regenerate byte-identical."
+      "comment": "Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here — it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. The ISOBMFF primitives this module exports since unmark-web v0.4.0, and the inspectIsobmff byteScan option added with them, are now mirrored here and used by src/utils/avMeta.ts. byteScan defaults to the previous behaviour, so the image goldens regenerate byte-identical. Upstream #264 is mirrored in full: the C2PA ContentProvenanceBox user type d8fec3d6-1b0e-483c-9297-5828877ec481 is recognized and stripped in inspectIsobmff and stripIsobmff, so AVIF/HEIC and, through avMeta.ts, MP4/MOV now lose a manifest whose payload carries no ASCII c2pa/jumb marker. Upstream #261 is not mirrored and needs no counterpart: it makes clean_image's post-clean scan skip an exiftool subprocess and a redundant SynthID call, neither of which exists here."
     },
     {
       "id": "unmark-web/js/av_meta.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/av_meta.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/av_meta.js",
-      "sha256": "9b19d71a968369f200007a6f63266788350b23bcd45cfb982b327792df61f75b",
+      "sha256": "46e6806eae18aeb3a0593682248b30c7dd51fea0270c5366e6003909ed49a906",
       "mirrors": [
         "src/utils/avMeta.ts",
         "tests/golden/avMeta.json"
       ],
-      "comment": "Full mirror, both drivers: the buffer driver the golden file pins byte for byte, and the slice driver that walks box and chunk headers through File.slice() so a video is cleaned without being held. Unlike the image port there is no deliberate format gap here; every container unmark-web handles (MP4/MOV/M4A/M4V, WAV, MP3, FLAC) is handled here."
+      "comment": "Full mirror, both drivers: the buffer driver the golden file pins byte for byte, and the slice driver that walks box and chunk headers through File.slice() so a video is cleaned without being held. Unlike the image port there is no deliberate format gap here; every container unmark-web handles (MP4/MOV/M4A/M4V, WAV, MP3, FLAC) is handled here. Since unmark-web's #264 sync it also carries containsC2paProvBoxInFile, the chunked counterpart of the whole-file user-type scan that the slice driver needs because it disables the per-box one."
     },
     {
       "id": "watermarks-remover/service/scripts/text_unicode.py",
@@ -48,11 +48,11 @@
       "id": "watermarks-remover/service/scripts/image_meta.py",
       "url": "https://raw.githubusercontent.com/guillaumemeyer/watermarks-remover/main/service/scripts/image_meta.py",
       "history": "https://github.com/guillaumemeyer/watermarks-remover/commits/main/service/scripts/image_meta.py",
-      "sha256": "4fb8990b4743b9123f543dd87a2f589c0bbbecf5f5ce5447c9548b43c5306806",
+      "sha256": "360da6bac49f58c88e57c2921ec93836287c675f91e7cc997e2bd83402320c0d",
       "mirrors": [
         "src/utils/imageMeta.ts"
       ],
-      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here — it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Also partial in a second way since watermarks-remover#156: that change hardened the error handling around the external c2patool subprocess, which has no counterpart in a browser or in this converter. Partial in a third way since watermarks-remover 8e16b822, which passes creationflags=subprocess_creationflags to every subprocess.run so a child process opens no console window on Windows: neither a browser nor this converter starts child processes. Partial in two more ways since 2026-08-27: upstream #252 refuses HTTP redirects in _synthid_score_http to block SSRF, and #254 adds a `changed` field to clean_image's returned dict for clean_file.py's new --only-changed flag. Neither has a counterpart here: this converter makes no HTTP calls, and clean() returns bytes rather than writing a file, so the caller already holds both sides to compare."
+      "comment": "Root source, as above. Deliberately partial mirror: upstream added BMP, GIF and TIFF in guillaumemeyer/watermarks-remover#107 and unmark-web ports all three, but only GIF is mirrored here — it is the only one of the three that gets uploaded to WordPress in practice. A green check on this source therefore means 'no change we decided to track', not 'byte-for-byte feature parity'. If BMP or TIFF ever matter here, port stripBmp/stripTiff from unmark-web's js/image_meta.js. Also partial in a second way since watermarks-remover#156: that change hardened the error handling around the external c2patool subprocess, which has no counterpart in a browser or in this converter. Partial in a third way since watermarks-remover 8e16b822, which passes creationflags=subprocess_creationflags to every subprocess.run so a child process opens no console window on Windows: neither a browser nor this converter starts child processes. Partial in two more ways since 2026-08-27: upstream #252 refuses HTTP redirects in _synthid_score_http to block SSRF, and #254 adds a `changed` field to clean_image's returned dict for clean_file.py's new --only-changed flag. Neither has a counterpart here: this converter makes no HTTP calls, and clean() returns bytes rather than writing a file, so the caller already holds both sides to compare. Upstream #264 is mirrored in full: the C2PA ContentProvenanceBox user type d8fec3d6-1b0e-483c-9297-5828877ec481 is recognized and stripped in inspectIsobmff and stripIsobmff, so AVIF/HEIC and, through avMeta.ts, MP4/MOV now lose a manifest whose payload carries no ASCII c2pa/jumb marker. Upstream #261 is not mirrored and needs no counterpart: it makes clean_image's post-clean scan skip an exiftool subprocess and a redundant SynthID call, neither of which exists here."
     },
     {
       "id": "watermarks-remover/service/scripts/av_meta.py",

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { createHash } from 'node:crypto';
 import { detectFormat, inspect, clean } from '../src/utils/imageMeta';
-import { IMAGE_SAMPLES } from './samples';
+import { C2PA_BMFF_UUID, IMAGE_SAMPLES } from './samples';
 import golden from './golden/imageMeta.json';
 
 const sha = (u8: Uint8Array): string => createHash('sha256').update(Buffer.from(u8)).digest('hex').slice(0, 16);
@@ -52,6 +52,34 @@ describe('imageMeta', () => {
       });
     });
   }
+
+  it('recognizes a C2PA content-provenance uuid box by user type, not by substring', () => {
+    // Upstream watermarks-remover#264. The goldens above already pin the bytes;
+    // this states the behaviour they encode, so a regression reads as the claim
+    // it breaks rather than as a hash that moved.
+    const hasUuid = (u8: Uint8Array): boolean =>
+      Buffer.from(u8).includes(Buffer.from(C2PA_BMFF_UUID));
+    for (const name of [
+      'avif_c2pa_prov_uuid',
+      'avif_c2pa_prov_no_marker',
+      'avif_c2pa_prov_merkle',
+      'avif_c2pa_prov_offset4',
+      'avif_meta_c2pa_prov_uuid',
+    ]) {
+      const src = IMAGE_SAMPLES[name];
+      expect(inspect(src).hasC2pa, name).toBe(true);
+      for (const stripAllMetadata of [true, false]) {
+        const out = clean(src, { stripAllMetadata }).data;
+        expect(hasUuid(out), `${name} stripAll=${stripAllMetadata}`).toBe(false);
+        expect(out.length, name).toBe(src.length);
+      }
+    }
+
+    // The same 16 bytes at an offset the spec does not use is not a manifest.
+    const bad = IMAGE_SAMPLES.avif_uuid_c2pa_bytes_bad_offset;
+    expect(inspect(bad).hasC2pa).toBe(false);
+    expect(hasUuid(clean(bad, { stripAllMetadata: false }).data)).toBe(true);
+  });
 
   it('rejects data that is not an image it understands', () => {
     const notAnImage = Uint8Array.from('this is plain text, not an image', (c) => c.charCodeAt(0));
