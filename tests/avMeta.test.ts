@@ -4,12 +4,13 @@ import {
   AV_EXTS,
   cleanAv,
   cleanAvFile,
+  containsC2paProvBoxInFile,
   detectAvFormat,
   detectAvFormatFile,
   inspectAv,
   inspectAvFile,
 } from '../src/utils/avMeta';
-import { AV_SAMPLES } from './samples';
+import { AV_SAMPLES, C2PA_BMFF_UUID } from './samples';
 import golden from './golden/avMeta.json';
 
 const sha = (u8: Uint8Array): string =>
@@ -111,6 +112,48 @@ describe('avMeta', () => {
       }
     });
   }
+
+  it('strips a C2PA content-provenance uuid box through both drivers', async () => {
+    const hasUuid = (u8: Uint8Array): boolean =>
+      Buffer.from(u8).includes(Buffer.from(C2PA_BMFF_UUID));
+    for (const name of [
+      'mp4_c2pa_prov',
+      'mp4_c2pa_prov_no_marker',
+      'mp4_c2pa_prov_merkle',
+      'mp4_c2pa_prov_fullbox',
+      'mp4_c2pa_prov_update_last',
+    ]) {
+      const src = AV_SAMPLES[name];
+      expect(inspectAv(src).hasC2pa, name).toBe(true);
+      expect((await inspectAvFile(asFile(src, 'clip.mp4'))).hasC2pa, name).toBe(true);
+      for (const stripAllMetadata of [true, false]) {
+        const buffered = cleanAv(src, { stripAllMetadata }).data;
+        const sliced = await bytesOfBlob(
+          (await cleanAvFile(asFile(src, 'clip.mp4'), { stripAllMetadata })).blob
+        );
+        for (const out of [buffered, sliced]) {
+          expect(hasUuid(out), `${name} stripAll=${stripAllMetadata}`).toBe(false);
+          expect(out.length, name).toBe(src.length);
+        }
+      }
+    }
+
+    const bad = AV_SAMPLES.mp4_uuid_c2pa_bytes_bad_offset;
+    expect(inspectAv(bad).hasC2pa).toBe(false);
+    expect((await inspectAvFile(asFile(bad, 'clip.mp4'))).hasC2pa).toBe(false);
+    expect(hasUuid(cleanAv(bad, { stripAllMetadata: false }).data)).toBe(true);
+  });
+
+  it('finds a manifest that straddles a chunk boundary in the slice driver', async () => {
+    // The chunked scan overlaps by one byte less than the 28-byte match window,
+    // so a chunk size far below it still has to reach the buffered answer.
+    const src = AV_SAMPLES.mp4_c2pa_prov_merkle;
+    const file = asFile(src, 'clip.mp4');
+    for (const chunkSize of [1, 4, 16, 29]) {
+      expect(await containsC2paProvBoxInFile(file, chunkSize), String(chunkSize)).toBe(true);
+    }
+    expect(await containsC2paProvBoxInFile(asFile(AV_SAMPLES.mp4_clean, 'clip.mp4'), 8)).toBe(false);
+  });
 
   it('names every extension it claims to support', () => {
     expect(AV_EXTS).toEqual(['mp4', 'mov', 'm4a', 'm4v', 'wav', 'mp3', 'flac']);
