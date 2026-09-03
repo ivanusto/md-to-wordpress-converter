@@ -14,7 +14,7 @@
  */
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
 
@@ -40,7 +40,9 @@ const REF_TEXT = path.join(REF_DIR, 'layer_a.js');
 const ImageMeta = require(REF);
 const AvMeta = require(REF_AV);
 const LayerA = require(REF_TEXT);
-const { IMAGE_SAMPLES, AV_SAMPLES, TEXT_CASES, TEXT_OPTION_SETS } = await import(path.join(ROOT, 'tests', 'samples.ts'));
+// pathToFileURL, not the bare path: an absolute Windows path starts with a
+// drive letter, which import() reads as a URL scheme and refuses.
+const { IMAGE_SAMPLES, AV_SAMPLES, TEXT_CASES, TEXT_OPTION_SETS } = await import(pathToFileURL(path.join(ROOT, 'tests', 'samples.ts')).href);
 
 const sha = (u8) => createHash('sha256').update(Buffer.from(u8)).digest('hex').slice(0, 16);
 
