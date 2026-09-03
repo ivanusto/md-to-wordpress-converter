@@ -86,6 +86,10 @@ npm run build
 
 This project ships continuously from `master` rather than on tagged releases, so entries are grouped by date. / 本專案沒有版本標籤，直接從 `master` 持續部署，因此以日期分組。
 
+### 2026-08-30
+
+- **C2PA manifests are recognized by user type, not by a substring (以 user type 辨識 C2PA manifest)**: mirrors guillaumemeyer/watermarks-remover#264 through unmark-web. C2PA stores its manifest in a BMFF container as a top-level `uuid` box whose user type is `d8fec3d6-1b0e-483c-9297-5828877ec481`, not as a `c2pa` box. This mirror special-cased XMP's user type and otherwise looked for ASCII `c2pa`/`jumb` in the payload, so a manifest carrying neither was caught by luck in strip-all mode and missed entirely in keep mode. AVIF and HEIC through `imageMeta.ts`, MP4 and MOV through `avMeta.ts`, in both drivers; the equal-size `free` replacement is unchanged, so a cleaned file keeps its length.
+
 ### 2026-08-28
 
 - **Audio and video (影音中繼資料清除)**: `src/utils/avMeta.ts` ports unmark-web's `js/av_meta.js`, so MP4/MOV/M4A/M4V, MP3, WAV and FLAC are cleaned in the browser alongside images. Top-level `jumb`/`c2pa`/`uuid` (XMP) ISOBMFF boxes and `moov/udta` generator tags; WAV `C2PA`, `LIST INFO` and `id3 ` chunks; ID3v2 frames in MP3; C2PA's `GEOB application/c2pa` frame in FLAC. Both drivers are ported: the buffer one the goldens pin, and the slice one the panel uses so a video is never held in memory. Unlike the image port there is no deliberate format gap; every container unmark-web handles is handled here.
