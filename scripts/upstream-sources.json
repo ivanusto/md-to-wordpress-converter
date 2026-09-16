@@ -16,7 +16,7 @@
       "id": "unmark-web/js/image_meta.js",
       "url": "https://raw.githubusercontent.com/ivanusto/unmark-web/main/js/image_meta.js",
       "history": "https://github.com/ivanusto/unmark-web/commits/main/js/image_meta.js",
-      "sha256": "b9e4f0f4bc8af61af5f80c3b3a327632be3e9009275a87c0ead5207cfb2a6468",
+      "sha256": "56bf604b7c137c5d9d529438b3925b1f5502ba05cf793daf89a96b3bf584a7b0",
       "mirrors": [
         "src/utils/imageMeta.ts",
         "tests/golden/imageMeta.json"
