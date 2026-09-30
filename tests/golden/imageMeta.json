@@ -1354,6 +1354,106 @@
       }
     }
   },
+  "avif_mdat_chance_markers": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "8dbe2c95dfb0c694",
+        "length": 244,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      },
+      "false": {
+        "sha": "8dbe2c95dfb0c694",
+        "length": 244,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "avif_mdat_chance_markers_truncated": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "byte-scan C2PA markers: c2pa, C2PA, jumb, JUMB"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "59550c4fc0660579",
+        "length": 240,
+        "actions": [
+          "kept 180 bytes of truncated tail (file truncated)"
+        ]
+      },
+      "false": {
+        "sha": "59550c4fc0660579",
+        "length": 240,
+        "actions": [
+          "kept 180 bytes of truncated tail (file truncated)"
+        ]
+      }
+    }
+  },
+  "avif_mdat_prov_uuid_only": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": []
+    },
+    "clean": {
+      "true": {
+        "sha": "e75e480b4c4ea0f8",
+        "length": 84,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      },
+      "false": {
+        "sha": "e75e480b4c4ea0f8",
+        "length": 84,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
+  "avif_mdat_markers_short_trailer": {
+    "format": "avif",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "byte-scan C2PA markers: c2pa, C2PA, jumb, JUMB"
+      ]
+    },
+    "clean": {
+      "true": {
+        "sha": "2ab587ca0dfa8ac4",
+        "length": 211,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      },
+      "false": {
+        "sha": "2ab587ca0dfa8ac4",
+        "length": 211,
+        "actions": [
+          "no AVIF metadata boxes removed (already clean or none matched)"
+        ]
+      }
+    }
+  },
   "png_truncated_tail": {
     "format": "png",
     "inspect": {

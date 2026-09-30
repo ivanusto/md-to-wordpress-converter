@@ -86,6 +86,10 @@ npm run build
 
 This project ships continuously from `master` rather than on tagged releases, so entries are grouped by date. / 本專案沒有版本標籤，直接從 `master` 持續部署，因此以日期分組。
 
+### 2026-09-30
+
+- **Marker bytes inside a complete video or image are no longer a C2PA finding (完整檔案媒體資料裡碰巧出現的標記不再算 C2PA)**: mirrors guillaumemeyer/watermarks-remover#371 through unmark-web v0.9.0. Coded media contains short ASCII strings such as `jumb` or `c2pa` by chance, and inspection fell back to scanning the whole file for them even when every box had parsed. The scan now runs only when the box walk stopped early, a truncated download, which is what it exists for. AVIF and HEIC through `imageMeta.ts`, MP4 and MOV through `avMeta.ts`, in both drivers; the slice driver no longer reads the media payload of a complete MP4 at all.
+
 ### 2026-09-03
 
 - **A PNG text chunk can no longer inflate without a bound (PNG 文字區塊不再能無上限解壓)**: mirrors guillaumemeyer/watermarks-remover#308. A decompressed `zTXt`/`iTXt` value is capped at 1 MiB, because a few hundred KB of crafted deflate expands to hundreds of megabytes and the marker scan then copies it again. The inflate here already had a 16 MiB ceiling, but hitting it was treated the way corrupt input is: return nothing, say nothing. `inspectPng` now reports the chunk as *not fully inspected*, and `stripPng` drops it even in keep mode, because a chunk nobody could read is not a chunk anyone can vouch for. The same change also means a text chunk whose deflate stream stops early is scanned as far as it decoded, instead of being discarded whole.

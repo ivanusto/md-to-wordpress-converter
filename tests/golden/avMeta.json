@@ -458,6 +458,92 @@
       }
     }
   },
+  "mp4_mdat_chance_markers": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": false,
+      "hasAiMetadata": false,
+      "findings": [],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "a490a27c9a50f22d",
+        "length": 465,
+        "actions": [
+          "drop moov/udta box (generator/user-data tags)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "defaec6c47c25978",
+        "length": 465,
+        "actions": [
+          "no MP4 metadata boxes removed (already clean or none matched)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
+  "mp4_mdat_chance_markers_truncated": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "byte-scan C2PA markers: c2pa, C2PA, jumb, JUMB"
+      ],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "71a53f8995da17ca",
+        "length": 457,
+        "actions": [
+          "kept 256 bytes of truncated tail (file truncated)",
+          "drop moov/udta box (generator/user-data tags)"
+        ],
+        "inspectionIncomplete": true
+      },
+      "false": {
+        "sha": "e3d726b534e2c506",
+        "length": 457,
+        "actions": [
+          "kept 256 bytes of truncated tail (file truncated)"
+        ],
+        "inspectionIncomplete": true
+      }
+    }
+  },
+  "mp4_mdat_chance_markers_short_trailer": {
+    "format": "mp4",
+    "inspect": {
+      "hasC2pa": true,
+      "hasAiMetadata": true,
+      "findings": [
+        "byte-scan C2PA markers: c2pa, C2PA, jumb, JUMB"
+      ],
+      "notes": []
+    },
+    "clean": {
+      "true": {
+        "sha": "f21dde4621416919",
+        "length": 468,
+        "actions": [
+          "drop moov/udta box (generator/user-data tags)"
+        ],
+        "inspectionIncomplete": false
+      },
+      "false": {
+        "sha": "67747f1d27f618ca",
+        "length": 468,
+        "actions": [
+          "no MP4 metadata boxes removed (already clean or none matched)"
+        ],
+        "inspectionIncomplete": false
+      }
+    }
+  },
   "wav_clean": {
     "format": "wav",
     "inspect": {

@@ -775,7 +775,7 @@ async function isobmffBoxIndex(file: Blob): Promise<{ boxes: BoxIndexEntry[]; sc
 const MP4_OPAQUE = new Set(['mdat', 'free', 'skip', 'wide', 'ftyp']);
 
 async function inspectMp4File(file: Blob): Promise<Layer> {
-  const { boxes } = await isobmffBoxIndex(file);
+  const { boxes, scannedEnd } = await isobmffBoxIndex(file);
   const findings: string[] = [];
   let hasC2pa = false;
   let hasAiMetadata = false;
@@ -804,14 +804,18 @@ async function inspectMp4File(file: Blob): Promise<Layer> {
     udtaFindings.push(...udta.findings);
   }
   // The whole-file scan the buffer driver runs at the end of inspectIsobmff,
-  // before the moov/udta findings are appended.
-  const whole = await containsAnyInFile(file, C2PA_MARKERS);
-  if (whole.length && !hasC2pa) {
-    hasC2pa = true;
-    findings.push(`byte-scan C2PA markers: ${whole.slice(0, 6).join(', ')}`);
-  } else if (!whole.length && !hasC2pa && (await containsC2paProvBoxInFile(file))) {
-    hasC2pa = true;
-    findings.push('byte-scan C2PA BMFF content-provenance user type');
+  // before the moov/udta findings are appended. Since upstream #371 it only
+  // runs when the box walk stopped short of the end, so a complete file is
+  // inspected from its box headers and non-media boxes alone.
+  if (scannedEnd < file.size) {
+    const whole = await containsAnyInFile(file, C2PA_MARKERS);
+    if (whole.length && !hasC2pa) {
+      hasC2pa = true;
+      findings.push(`byte-scan C2PA markers: ${whole.slice(0, 6).join(', ')}`);
+    } else if (!whole.length && !hasC2pa && (await containsC2paProvBoxInFile(file))) {
+      hasC2pa = true;
+      findings.push('byte-scan C2PA BMFF content-provenance user type');
+    }
   }
   hasAiMetadata = hasAiMetadata || hasC2pa; // inspectIsobmff folds these together
   findings.push(...udtaFindings);
